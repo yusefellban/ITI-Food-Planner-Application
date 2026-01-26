@@ -1,9 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.FoodPlanner" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+    <style name="Theme.Dishly" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#008080</item>
+        <item name="colorPrimaryVariant">#004D40</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
     </style>
 
-    <style name="Theme.FoodPlanner" parent="Base.Theme.FoodPlanner" />
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFFFFF</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_dishly_logo</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.Dishly</item>
+    </style>
+
 </resources>

@@ -1,7 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.FoodPlanner" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <style name="Theme.Dishly" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#008080</item>
+        <item name="colorPrimaryVariant">#004D40</item>
+        <item name="colorOnPrimary">#3E3636</item>
     </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#373636</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_dishly_logo</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.Dishly</item>
+    </style>
+
 </resources>
