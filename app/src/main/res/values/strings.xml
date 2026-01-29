@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Dishly</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_slogan">Your culinary companion</string>
+    <string name="H_enter_username">Email Address</string>
+    <string name="H_enter_password">Password</string>
+    <string name="divider_text">Or Go With</string>
+    <string name="go_with_google">sign in with google</string>
 </resources>

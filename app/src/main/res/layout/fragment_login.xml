@@ -1,14 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".LoginFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/loginLogo"
+        android:layout_width="171dp"
+        android:layout_height="161dp"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_dishly_logo" />
+
+    <TextView
+        android:id="@+id/loginAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginLogo"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/loginSlogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_slogan"
+        android:textSize="20sp"
+        android:layout_below="@+id/loginAppName"
+        />
+
+    <EditText
+        android:id="@+id/loginEmailInput"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/loginSlogan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:autofillHints="emailAddress"
+        android:background="@drawable/bg_input_rounded"
+        android:drawableStart="@drawable/ic_user"
+        android:drawablePadding="12dp"
+        android:ems="10"
+        android:hint="@string/H_enter_username"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/loginPassInput"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:autofillHints="password"
+        android:background="@drawable/bg_input_rounded"
+        android:drawableStart="@drawable/ic_pass"
+        android:drawablePadding="12dp"
+        android:ems="10"
+        android:hint="@string/H_enter_password"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/loginEmailInput"
+        />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/btn_background"
+        android:layout_below="@+id/loginPassInput"
+       />
+
+<!--   custom  Divider -->
+    <LinearLayout
+        android:id="@+id/orDividerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_below="@id/loginButton"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#E0E0E0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OR"
+            android:textColor="#22C55E"
+            android:textStyle="bold"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#E0E0E0"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/go_with_google"
+        android:background="@drawable/button_background"
+        android:layout_below="@+id/orDividerLayout"
+        android:backgroundTint="@color/white"
+        android:layout_centerHorizontal="true"
+
+        />
+
+    <Button
+        android:id="@+id/loginGuestBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skep"
+        android:background="@color/btn_background"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/btn_background"
+        android:layout_marginRight="10dp"
+        />
+
+
+</RelativeLayout>
