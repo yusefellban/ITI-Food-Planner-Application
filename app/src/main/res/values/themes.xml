@@ -3,7 +3,7 @@
     <style name="Theme.Dishly" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">#008080</item>
         <item name="colorPrimaryVariant">#004D40</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorOnPrimary">@color/background</item>
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">

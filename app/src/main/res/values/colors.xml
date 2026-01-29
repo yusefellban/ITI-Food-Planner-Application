@@ -2,8 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="background">#2d6a4f96</color>
+    <color name="background">#E8F6F0</color>
     <color name="btn_background">#2d6a4f</color>
+    <color name="logo_color">#11d432</color>
 
 
 </resources>
