@@ -16,12 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
 
 public class SplashFragment extends Fragment {
    private FrameLayout splashScreen;
+   private TextView tvSkip;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class SplashFragment extends Fragment {
 
         LottieAnimationView animationView = view.findViewById(R.id.lottieAnimationView);
         splashScreen=view.findViewById(R.id.splashScreen);
+        tvSkip=view.findViewById(R.id.tvSkip);
 
         animationView.addAnimatorListener(new AnimatorListenerAdapter() {
             @Override
@@ -54,6 +57,17 @@ public class SplashFragment extends Fragment {
 
 
         splashScreen.setOnClickListener((v)->{
+            Log.d("onClickSplashFragment", "onAnimationEnd: ");
+
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.splashFragment, true)
+                    .build();
+
+            NavHostFragment.findNavController(SplashFragment.this)
+                    .navigate(R.id.action_splashFragment_to_loginFragment, null, navOptions);
+        });
+
+        tvSkip.setOnClickListener((v)->{
             Log.d("onClickSplashFragment", "onAnimationEnd: ");
 
             NavOptions navOptions = new NavOptions.Builder()
