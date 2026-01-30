@@ -49,7 +49,7 @@
         android:drawableStart="@drawable/ic_mail_scaled"
         android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="@string/H_enter_username"
+        android:hint="@string/H_enter_email"
         android:inputType="textEmailAddress"
         android:padding="12dp"
         android:textColor="@color/black" />
@@ -158,6 +158,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/googleButton"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true">
 
 

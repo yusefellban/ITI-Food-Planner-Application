@@ -15,11 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 
 
 public class SplashFragment extends Fragment {
+   private FrameLayout splashScreen;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,16 +36,32 @@ public class SplashFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         LottieAnimationView animationView = view.findViewById(R.id.lottieAnimationView);
-
+        splashScreen=view.findViewById(R.id.splashScreen);
 
         animationView.addAnimatorListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 Log.d("onEndSplashFragment", "onAnimationEnd: ");
-                NavOptions navOption=new NavOptions.Builder().setPopUpTo(R.id.splashFragment,true).build();
+
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.splashFragment, true)
+                        .build();
+
                 NavHostFragment.findNavController(SplashFragment.this)
-                        .navigate(R.id.action_splashFragment_to_loginFragment);
+                        .navigate(R.id.action_splashFragment_to_loginFragment, null, navOptions);
             }
+        });
+
+
+        splashScreen.setOnClickListener((v)->{
+            Log.d("onClickSplashFragment", "onAnimationEnd: ");
+
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.splashFragment, true)
+                    .build();
+
+            NavHostFragment.findNavController(SplashFragment.this)
+                    .navigate(R.id.action_splashFragment_to_loginFragment, null, navOptions);
         });
 
     }

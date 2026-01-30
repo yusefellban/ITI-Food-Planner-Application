@@ -2,7 +2,7 @@
     <string name="app_name">Dishly</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_slogan">Your culinary companion</string>
-    <string name="H_enter_username">Email Address</string>
+    <string name="H_enter_email">Email Address</string>
     <string name="H_enter_password">Password</string>
     <string name="divider_text">Or Go With</string>
     <string name="go_with_google">sign in with google</string>
@@ -10,4 +10,10 @@
     <string name="T_login">login</string>
     <string name="T_sign_up">Sign Up</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="T_join_dishly">Join Dishly</string>
+    <string name="registration_slogan">Start your culinary journey with personalized meal planning.</string>
+    <string name="T_full_name">Full Name</string>
+    <string name="T_create_acount">Create Acount</string>
+    <string name="T_sign_up_whit_google">Sign up whit google</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>
