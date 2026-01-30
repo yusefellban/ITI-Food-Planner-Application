@@ -10,17 +10,19 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 public class LoginFragment extends Fragment {
 
-private TextView goToSignUp;
+    private TextView goToSignUp;
+    private Button loginButton;
+
 
     public LoginFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -33,11 +35,22 @@ private TextView goToSignUp;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        goToSignUp=view.findViewById(R.id.loginSignUp);
-        goToSignUp.setOnClickListener((v)->{
+
+        goToSignUp = view.findViewById(R.id.loginSignUp);
+        loginButton = view.findViewById(R.id.loginButton);
+
+
+        goToSignUp.setOnClickListener((v) -> {
             NavHostFragment.findNavController(LoginFragment.this)
                     .navigate(R.id.action_loginFragment_to_registrationFragment);
 
         });
+        loginButton.setOnClickListener((v) -> {
+            NavHostFragment.findNavController(LoginFragment.this)
+                    .navigate(R.id.action_loginFragment_to_homeFragment);
+
+        });
+
+
     }
 }

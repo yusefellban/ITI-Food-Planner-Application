@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".HomeFragment">
+
+
+    <ImageView
+        android:id="@+id/homeUserImage"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/T_user_icon"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_user_guest" />
+
+    <TextView
+        android:id="@+id/homeUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+
+        android:layout_marginStart="30dp"
+        android:text="@string/T_guest"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/homeScreenTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/homeUserImage"
+        android:layout_marginTop="20dp"
+        android:text="@string/T_meal_of_the_day"
+        android:textStyle="bold"
+        android:textSize="34sp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/homeMealOfTheDayCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        android:layout_below="@id/homeScreenTitle"
+        >
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/homeRecipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/food_sample"
+            app:shapeAppearanceOverlay="@style/RoundedCornerImage" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/detailCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeRecipeImage"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="-180dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/card_color"
+
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/homeRecipeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Spicy Basil Chicken"
+                    android:textColor="@color/btn_background"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/homeCookNow"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/btn_background"
+                    android:text="@string/T_cook_now"
+                    android:textAllCaps="false"
+                    app:cornerRadius="20dp"
+                    app:icon="@drawable/ic_cooking_pot"
+                    app:iconGravity="textStart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/homeTag2" />
+
+                <ImageView
+                    android:id="@+id/homeMealCardArea"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:src="@drawable/ic_user_guest"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/homeTag1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/homeRecipeTitle" />
+
+                <TextView
+                    android:id="@+id/homeTag2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    app:layout_constraintStart_toEndOf="@+id/homeTag1"
+                    app:layout_constraintTop_toBottomOf="@+id/homeRecipeTitle" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

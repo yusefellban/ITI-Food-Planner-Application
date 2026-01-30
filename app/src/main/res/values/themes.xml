@@ -13,5 +13,7 @@
 
         <item name="postSplashScreenTheme">@style/Theme.Dishly</item>
     </style>
-
+    <style name="RoundedCornerImage">
+        <item name="cornerSize">32dp</item>
+    </style>
 </resources>

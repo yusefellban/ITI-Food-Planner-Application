@@ -10,13 +10,14 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 public class RegistrationFragment extends Fragment {
   private TextView registrationToLogin;
 
-
+  private Button registrationButton;
     public RegistrationFragment() {
         // Required empty public constructor
     }
@@ -34,10 +35,15 @@ public class RegistrationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registrationToLogin=view.findViewById(R.id.registrationToLogin);
+        registrationButton=view.findViewById(R.id.registrationButton);
 
         registrationToLogin.setOnClickListener((v)->{
             NavHostFragment.findNavController(RegistrationFragment.this)
                     .navigate(R.id.action_registrationFragment_to_loginFragment);
+        });
+        registrationButton.setOnClickListener((v)->{
+            NavHostFragment.findNavController(RegistrationFragment.this)
+                    .navigate(R.id.action_registrationFragment_to_homeFragment);
         });
     }
 }

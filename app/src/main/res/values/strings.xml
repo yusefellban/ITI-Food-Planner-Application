@@ -16,4 +16,8 @@
     <string name="T_create_acount">Create Acount</string>
     <string name="T_sign_up_whit_google">Sign up whit google</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="T_guest">Guest</string>
+    <string name="T_meal_of_the_day">Meal of the day</string>
+    <string name="T_cook_now">Cook Now</string>
+    <string name="T_user_icon">user icon</string>
 </resources>
