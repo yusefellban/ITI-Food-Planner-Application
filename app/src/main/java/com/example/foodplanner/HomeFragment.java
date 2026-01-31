@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.Entity.Meal;
 import com.example.foodplanner.adapter.HomeCarouselAdapter;
+import com.example.foodplanner.adapter.RefreshManager;
 import com.example.foodplanner.remote.RetrofitClient;
 import com.example.foodplanner.service.CountryCodeService;
 import com.example.foodplanner.service.GetRandomMealList;
@@ -33,7 +35,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class HomeFragment extends Fragment {
 
     private ImageView homeRecipeImage;
@@ -43,25 +44,21 @@ public class HomeFragment extends Fragment {
     private TextView homeTag2;
 
     private ShimmerFrameLayout shimmerFrameLayout;
+    private ShimmerFrameLayout shimmerCarousel;
     private View mealCard;
+    private SwipeRefreshLayout swipeLayout;
+    private RecyclerView recyclerView;
 
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
+    public HomeFragment() { }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         homeRecipeImage = view.findViewById(R.id.homeRecipeImage);
         homeRecipeTitle = view.findViewById(R.id.homeRecipeTitle);
@@ -70,12 +67,33 @@ public class HomeFragment extends Fragment {
         shimmerFrameLayout = view.findViewById(R.id.homeMealOfTheDayShimmerLayout);
         mealCard = view.findViewById(R.id.homeMealOfTheDayCard);
         homeMealCardArea = view.findViewById(R.id.homeMealCardArea);
+        swipeLayout = view.findViewById(R.id.swipeRefreshLayout);
+        shimmerCarousel = view.findViewById(R.id.homeProductShimmerLayout);
+        recyclerView = view.findViewById(R.id.homeProductsRecyclerView);
+
+        RefreshManager.setup(swipeLayout, this::loadAllData);
 
 
-        //start animation
+        loadAllData();
+    }
+
+
+    private void loadAllData() {
+
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
+        mealCard.setVisibility(View.GONE);
 
+        shimmerCarousel.setVisibility(View.VISIBLE);
+        shimmerCarousel.startShimmer();
+        recyclerView.setVisibility(View.GONE);
 
+        // نداء الـ APIs
+        fetchRandomMeal();
+        fetchCarouselMeals();
+    }
+
+    private void fetchRandomMeal() {
         RetrofitClient.getApiService().getRandomMeal().enqueue(new Callback<MealResponse>() {
             @Override
             public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
@@ -85,9 +103,8 @@ public class HomeFragment extends Fragment {
                     mealCard.setVisibility(View.VISIBLE);
 
                     Meal myMeal = response.body().getMeals().get(0);
-                    Log.d("MealDetails", "Ingredient: " + myMeal.toString());
 
-                    Glide.with(view)
+                    Glide.with(requireContext())
                             .load(myMeal.getThumbnailUrl())
                             .placeholder(R.drawable.rounded_image)
                             .centerCrop()
@@ -95,83 +112,66 @@ public class HomeFragment extends Fragment {
                     homeRecipeTitle.setText(myMeal.getName());
 
                     String code = CountryCodeService.getCountryCode(myMeal.getArea());
-
                     if (code != null) {
+                        homeMealCardArea.setVisibility(View.VISIBLE);
                         String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";
-                        Glide.with(view)
-                                .load(flagUrl)
-                                .circleCrop()
-                                .into(homeMealCardArea);
+                        Glide.with(requireContext()).load(flagUrl).circleCrop().into(homeMealCardArea);
                     } else {
                         homeMealCardArea.setVisibility(View.GONE);
                     }
 
                     if (myMeal.getTags() != null) {
-                        List<String> list=myMeal.getTagsAsList();
-                        if(list.isEmpty()){
-                            homeTag1.setText(myMeal.getTags());
-                        }else if(list.size()>=2){
-                        homeTag1.setText(list.get(0));
-                            homeTag2.setText(list.get(1));
-                        }
-                        else{
+                        List<String> list = myMeal.getTagsAsList();
+                        if(list.isEmpty()) homeTag1.setText(myMeal.getTags());
+                        else if(list.size() >= 2) {
                             homeTag1.setText(list.get(0));
-
-                        }
-
+                            homeTag2.setText(list.get(1));
+                        } else homeTag1.setText(list.get(0));
                     }
-
                 }
+                checkIfAllLoadingFinished();
             }
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                // Handle error//shimmerFrameLayout.stopShimmer();
-              // shimmerFrameLayout.setVisibility(View.GONE);
                 Log.e("Error", t.getMessage());
+                checkIfAllLoadingFinished();
             }
         });
+    }
 
-        ShimmerFrameLayout shimmerCarousel = view.findViewById(R.id.homeProductShimmerLayout);
-        shimmerCarousel.startShimmer();
-
+    private void fetchCarouselMeals() {
         GetRandomMealList.getMealsList(new OnMealsLoadedListener() {
             @Override
             public void onSuccess(List<Meal> meals) {
                 if (getContext() == null) return;
 
-                RecyclerView recyclerView = view.findViewById(R.id.homeProductsRecyclerView);
-
                 shimmerCarousel.stopShimmer();
                 shimmerCarousel.setVisibility(View.GONE);
 
-                recyclerView.setAlpha(0f);
+//                recyclerView.setAlpha(0f);
                 recyclerView.setVisibility(View.VISIBLE);
-                recyclerView.animate().alpha(1f).setDuration(500);
-
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setItemViewCacheSize(20);
-
+//                recyclerView.animate().alpha(1f).setDuration(500);
 
                 if (recyclerView.getLayoutManager() == null) {
                     CarouselLayoutManager layoutManager = new CarouselLayoutManager(new MultiBrowseCarouselStrategy());
                     recyclerView.setLayoutManager(layoutManager);
-
-                 /// only once to not throws any exceptions
-                    CarouselSnapHelper snapHelper = new CarouselSnapHelper();
-                    snapHelper.attachToRecyclerView(recyclerView);
+                    new CarouselSnapHelper().attachToRecyclerView(recyclerView);
                 }
 
-                HomeCarouselAdapter adapter = new HomeCarouselAdapter(getContext(), meals);
-                recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(new HomeCarouselAdapter(getContext(), meals));
+                checkIfAllLoadingFinished();
             }
 
             @Override
             public void onFailure(String error) {
-                shimmerCarousel.stopShimmer();
                 Log.e("Error", error);
+                checkIfAllLoadingFinished();
             }
         });
+    }
 
+    private void checkIfAllLoadingFinished() {
+        RefreshManager.stopRefreshing(swipeLayout);
     }
 }
