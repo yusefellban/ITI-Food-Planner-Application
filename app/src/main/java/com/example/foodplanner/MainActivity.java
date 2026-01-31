@@ -1,6 +1,7 @@
 package com.example.foodplanner;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.splashscreen.SplashScreen;
@@ -15,7 +16,14 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.foodplanner.Entity.Meal;
+import com.example.foodplanner.remote.RetrofitClient;
+import com.example.foodplanner.wrapper.MealResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 bottomNav.setVisibility(View.VISIBLE);
             }
         });
+
 
     }
 }

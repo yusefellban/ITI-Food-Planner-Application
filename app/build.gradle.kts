@@ -53,5 +53,6 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.airbnb.android:lottie:6.1.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
 }

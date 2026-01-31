@@ -12,17 +12,16 @@
         android:id="@+id/homeUserImage"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:contentDescription="@string/T_user_icon"
         android:layout_marginTop="20dp"
+        android:contentDescription="@string/T_user_icon"
         android:src="@drawable/ic_user_guest" />
 
     <TextView
         android:id="@+id/homeUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-
         android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
         android:text="@string/T_guest"
         android:textStyle="bold" />
 
@@ -33,9 +32,24 @@
         android:layout_below="@id/homeUserImage"
         android:layout_marginTop="20dp"
         android:text="@string/T_meal_of_the_day"
-        android:textStyle="bold"
         android:textSize="34sp"
-        />
+        android:textStyle="bold" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/homeScreenTitle">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:shimmer_auto_start="true">
+            <include layout="@layout/shimmer_placeholder_home" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+
 
     <RelativeLayout
         android:id="@+id/homeMealOfTheDayCard"
@@ -43,16 +57,36 @@
         android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:padding="16dp"
-        android:layout_below="@id/homeScreenTitle"
+        android:visibility="gone"
+
         >
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/homeRecipeImage"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="300dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/food_sample"
             app:shapeAppearanceOverlay="@style/RoundedCornerImage" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardBackgroundColor="@color/bg_favorite_color"
+            app:cardCornerRadius="40dp">
+
+            <ImageView
+                android:id="@+id/mealOfTheDayHeart"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="favorite icon"
+                android:scaleType="centerCrop"
+                android:src="@drawable/heart_white" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/detailCard"
@@ -61,24 +95,24 @@
             android:layout_below="@id/homeRecipeImage"
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="-180dp"
+            app:cardBackgroundColor="@color/card_color"
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/card_color"
 
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp">
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/homeRecipeTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Spicy Basil Chicken"
+                    android:layout_width="210dp"
+                    android:layout_height="50dp"
+                    android:maxHeight="750dp"
                     android:textColor="@color/btn_background"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -104,6 +138,7 @@
                     android:layout_height="34dp"
                     android:src="@drawable/ic_user_guest"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/homeRecipeTitle"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -111,7 +146,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="TextView"
+                    android:background="@drawable/bg_skip"
+                    android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/homeRecipeTitle" />
 
@@ -121,16 +157,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="TextView"
+                    android:textColor="@color/black"
+                    android:background="@drawable/bg_skip"
                     app:layout_constraintStart_toEndOf="@+id/homeTag1"
                     app:layout_constraintTop_toBottomOf="@+id/homeRecipeTitle" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
         </com.google.android.material.card.MaterialCardView>
 
+
     </RelativeLayout>
+        </FrameLayout>
 
 </RelativeLayout>

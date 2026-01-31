@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <View
+        android:id="@+id/shimmer_image"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/shimmer_rounded" />
+
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/shimmer_rounded_background" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shimmer_image"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="-220dp"
+        android:background="@drawable/shimmer_rounded_background"
+        android:elevation="0dp"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="150dp"
+                android:layout_height="25dp"
+                android:background="@drawable/shimmer_rounded" />
+
+            <View
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="100dp"
+                android:background="@drawable/shimmer_rounded" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="60dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/shimmer_rounded" />
+
+            <View
+                android:layout_width="60dp"
+                android:layout_height="15dp"
+                android:background="@drawable/shimmer_rounded" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shimmer_rounded" />
+    </LinearLayout>
+</RelativeLayout>
