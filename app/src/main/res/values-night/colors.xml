@@ -6,4 +6,6 @@
     <color name="btn_background">#22C55E</color>
     <color name="black">#FFFFFFFF</color>
     <color name="white">#FF000000</color>
+    <color name="text_bg">#CC2E2E2E</color>
+
 </resources>

@@ -8,4 +8,5 @@
     <color name="logo_color">#11d432</color>
     <color name="card_color">#CCFFFFFF</color>
     <color name="bg_favorite_color">#CC404040</color>
+    <color name="text_bg">#CCFFFFFF</color>
 </resources>

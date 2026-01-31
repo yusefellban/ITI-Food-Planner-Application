@@ -1,16 +1,30 @@
 package com.example.foodplanner.Entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Meal {
+    @SerializedName("idMeal")
     private String id;
+    @SerializedName("strMeal")
     private String name;
+    @SerializedName("strCategory")
     private String category;
+    @SerializedName("strArea")
     private String area;
+    @SerializedName("strInstructions")
+
     private String instructions;
+    @SerializedName("strMealThumb")
+
     private String thumbnailUrl;
+    @SerializedName("strYoutube")
+
     private String youtubeUrl;
+    @SerializedName("strTags")
+
     private String tags;
 
  /// Deserializable will provide this list

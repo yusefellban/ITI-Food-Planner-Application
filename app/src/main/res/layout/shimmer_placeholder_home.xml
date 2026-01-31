@@ -6,7 +6,7 @@
     android:padding="16dp">
 
     <View
-        android:id="@+id/shimmer_image"
+        android:id="@+id/mealShimmer_image"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:background="@drawable/shimmer_rounded" />
@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/shimmer_image"
+        android:layout_below="@id/mealShimmer_image"
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="-220dp"
         android:background="@drawable/shimmer_rounded_background"
@@ -44,7 +44,7 @@
             <View
                 android:layout_width="34dp"
                 android:layout_height="34dp"
-                android:layout_marginStart="100dp"
+                android:layout_marginStart="60dp"
                 android:background="@drawable/shimmer_rounded" />
 
         </LinearLayout>
