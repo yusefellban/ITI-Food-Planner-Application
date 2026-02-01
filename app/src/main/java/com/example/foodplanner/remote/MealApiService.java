@@ -4,8 +4,12 @@ import com.example.foodplanner.wrapper.MealResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface MealApiService {
     @GET("random.php")
     Call<MealResponse> getRandomMeal();
+
+    @GET("lookup.php")
+    Call<MealResponse> getMealByID(@Query("i") String mealId);
 }

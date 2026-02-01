@@ -3,6 +3,7 @@ package com.example.foodplanner.Entity;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Meal {
@@ -28,7 +29,7 @@ public class Meal {
     private String tags;
 
  /// Deserializable will provide this list
-    private List<String> ingredients;
+    private HashMap<String,String> ingredients;
 
     public Meal() {
     }
@@ -100,11 +101,11 @@ public class Meal {
         this.youtubeUrl = youtubeUrl;
     }
 
-    public List<String> getIngredients() {
+    public HashMap<String, String> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<String> ingredients) {
+    public void setIngredients(HashMap<String, String> ingredients) {
         this.ingredients = ingredients;
     }
 

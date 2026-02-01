@@ -19,6 +19,7 @@ public class GetRandomMealList {
     private static Retrofit retrofit = null;
 
     ///
+
     public static void getMealsList(OnMealsLoadedListener listener) {
         List<Meal> mealslist = new ArrayList<>();
         MealApiService mealApiService = getRetrofit().create(MealApiService.class);
@@ -35,7 +36,6 @@ public class GetRandomMealList {
                     }
 
                     completedRequests[0]++;
-                    // لما نخلص الـ 6 طلبات كلهم نبعت اللستة للـ listener
                     if (completedRequests[0] == totalRequests) {
                         listener.onSuccess(mealslist);
                     }

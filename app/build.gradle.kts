@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -55,5 +56,8 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.1.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.navigation:navigation-fragment:2.5.3")
+    implementation("androidx.navigation:navigation-ui:2.5.3")
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
 }

@@ -8,22 +8,14 @@ import androidx.core.splashscreen.SplashScreen;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.foodplanner.Entity.Meal;
-import com.example.foodplanner.remote.RetrofitClient;
-import com.example.foodplanner.wrapper.MealResponse;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 /// hide nav bar in specific screens
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.loginFragment || destination.getId() == R.id.registrationFragment
-                    ||destination.getId() == R.id.splashFragment) {
+                    ||destination.getId() == R.id.splashFragment || destination.getId()==R.id.mealDetailsFragment) {
 
                 bottomNav.setVisibility(View.GONE);
             } else {

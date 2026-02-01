@@ -4,6 +4,7 @@ import com.example.foodplanner.Entity.Meal;
 import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MealDeserializer implements JsonDeserializer<Meal> {
@@ -22,12 +23,12 @@ public class MealDeserializer implements JsonDeserializer<Meal> {
         meal.setTags(getOrEmpty(jsonObject, "strTags"));
 
         //get the list of ingredients
-        List<String> ingredientsList = new ArrayList<>();
+        HashMap<String,String> ingredientsList = new HashMap<>();
         for (int i = 1; i <= 20; i++) {
             String ingredient = getOrEmpty(jsonObject, "strIngredient" + i);
             String measure = getOrEmpty(jsonObject, "strMeasure" + i);
             if (!ingredient.isEmpty()) {
-                ingredientsList.add(measure + " " + ingredient);
+                ingredientsList.put(ingredient,measure);
             } else {
                 break;
             }
