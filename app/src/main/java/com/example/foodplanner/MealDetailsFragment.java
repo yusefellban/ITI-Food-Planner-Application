@@ -10,9 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,16 +28,18 @@ import com.example.foodplanner.remote.RetrofitClient;
 import com.example.foodplanner.service.CountryCodeService;
 import com.example.foodplanner.wrapper.MealResponse;
 import com.example.foodplanner.wrapper.SelectedMeal;
+
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,11 +56,12 @@ public class MealDetailsFragment extends Fragment {
     private TextView detailsCategory;
     private RecyclerView detailsIngredientsRecyclerView;
     private RecyclerView detailsInstructionRecyclerView;
+
     private YouTubePlayerView youtubePlayerView;
+
+
     private SelectedMeal selectedMeal;
 
-    private String mPendingVideoId;
-    private YouTubePlayer mYouTubePlayer;
 
     public MealDetailsFragment() {
         // Required empty public constructor
@@ -64,7 +71,9 @@ public class MealDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_meal_details, container, false);
+        View view= inflater.inflate(R.layout.fragment_meal_details, container, false);
+
+        return view;
 
     }
 
@@ -79,7 +88,6 @@ public class MealDetailsFragment extends Fragment {
         detailsIngredientsRecyclerView = view.findViewById(R.id.detailsIngredientsRecyclerView);
         detailsInstructionRecyclerView = view.findViewById(R.id.detailsInstructionRecyclerView);
         detailsIngredientsItems = view.findViewById(R.id.detailsIngredientsItems);
-        youtubePlayerView = view.findViewById(R.id.youtube_player_view);
 
         selectedMeal = MealDetailsFragmentArgs.fromBundle(getArguments()).getSelectedMeal();
 
@@ -95,22 +103,19 @@ public class MealDetailsFragment extends Fragment {
 
         ///  show youtube video
         ///  force the video end with screen lifecycle
+        youtubePlayerView = view.findViewById(R.id.player_view);
         getLifecycle().addObserver(youtubePlayerView);
-        IFramePlayerOptions options = new IFramePlayerOptions.Builder()
-                .controls(1)
-                .origin("https://www.youtube.com")
-                .build();
-        youtubePlayerView.initialize(new AbstractYouTubePlayerListener() {
+
+        String apiUrl = "https://www.youtube.com/watch?v=IhwPQL9dFYc";
+        String videoId = getYoutubeVideoId(apiUrl);
+        youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                mYouTubePlayer = youTubePlayer;
-                if (mPendingVideoId != null) {
-                    mYouTubePlayer.cueVideo(mPendingVideoId, 0);
+            public void onReady(@NonNull YouTubePlayer youtubePlayer) {
+                if (videoId != null) {
+                    youtubePlayer.cueVideo(videoId, 0);
                 }
             }
-        }, options); // استخدم المتغير options اللي عرفناه فوق
-
-
+        });
     }
 
 
@@ -145,7 +150,7 @@ public class MealDetailsFragment extends Fragment {
 
 
                 /// load youtube video
-                //loadYoutubeVideo(myMeal.getYoutubeUrl());
+
             }
 
             @Override
@@ -180,33 +185,20 @@ public class MealDetailsFragment extends Fragment {
 
         return null;
     }
+/// /////////////
+private String getEmbedUrl(String url) {
+    // اللينك: https://www.youtube.com/watch?v=K0ipnz4fwJI
+    if (url.contains("v=")) {
+        // بنقص النص من بعد "v="
+        String videoId = url.substring(url.indexOf("v=") + 2);
 
-    // 3. تعديل ميثود loadYoutubeVideo
-    private void loadYoutubeVideo(String videoUrl) {
-        String videoId = getYoutubeVideoId(videoUrl);
-
-        if (videoId != null && !videoId.isEmpty()) {
-            mPendingVideoId = videoId;
-
-            // 1. لو المشغل جاهز، اعرض الفيديو
-            if (mYouTubePlayer != null) {
-                mYouTubePlayer.cueVideo(videoId, 0);
-            }
-
-            // 2. الحل العبقري: لما المستخدم يدوس على المشغل، يفتح الفيديو في تطبيق يوتيوب
-            // ده بيضمن إن حتى لو الـ WebView علق، المستخدم هيشوف الفيديو 100%
-            youtubePlayerView.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    // لو مفيش تطبيق يوتيوب، افتحه في المتصفح
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + videoId)));
-                }
-            });
-
-        } else {
-            youtubePlayerView.setVisibility(View.GONE);
+        // لو اللينك فيه علامات تانية بعد الـ ID (زي &feature=...) بنشيلها
+        if (videoId.contains("&")) {
+            videoId = videoId.substring(0, videoId.indexOf("&"));
         }
+        return "https://www.youtube.com/embed/" + videoId;
     }
+    return url;
+}
+
 }
