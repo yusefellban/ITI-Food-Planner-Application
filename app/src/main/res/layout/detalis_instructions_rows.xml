@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/detalis_item_bg"
+    android:padding="20dp"
+    android:layout_marginBottom="20dp"
+    >
+    <TextView
+        android:id="@+id/instructionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="01"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/btn_background"
+
+        />
+    <View
+        android:layout_width="4dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/instructionNumber"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:background="@color/btn_background"
+        android:id="@+id/verticalLine"
+        android:layout_alignBottom="@+id/instructionStep"
+        android:layout_centerHorizontal="@+id/instructionNumber"
+        android:layout_marginBottom="8dp"
+
+        />
+
+     <TextView
+         android:id="@+id/instructionTitle"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textSize="18sp"
+         android:textStyle="bold"
+         android:textColor="@color/always_black"
+         android:text="Title"
+         android:layout_toEndOf="@+id/instructionNumber"
+         android:layout_marginStart="20dp"
+         />
+    <TextView
+        android:id="@+id/instructionStep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/always_black"
+        android:text="instruction"
+       android:layout_below="@+id/instructionTitle"
+        android:layout_toEndOf="@+id/instructionNumber"
+        android:layout_marginStart="20dp"
+
+        />
+
+
+</RelativeLayout>

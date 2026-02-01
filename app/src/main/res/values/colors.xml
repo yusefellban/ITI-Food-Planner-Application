@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="always_black">#FF000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="always_white">#FFFFFFFF</color>
     <color name="background">#E8F6F0</color>
+    <color name="gray">#686868</color>
 <!--    <color name="btn_background">#2d6a4f</color>-->
     <color name="btn_background">#1A2E20</color>
     <color name="logo_color">#11d432</color>

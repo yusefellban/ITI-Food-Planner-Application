@@ -44,5 +44,18 @@
         android:id="@+id/homeFragment"
         android:name="com.example.foodplanner.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.foodplanner.MealDetailsFragment"
+        android:label="fragment_meal_details"
+        tools:layout="@layout/fragment_meal_details" >
+        <argument
+            android:name="SelectedMeal"
+            app:argType="com.example.foodplanner.wrapper.SelectedMeal" />
+    </fragment>
 </navigation>

@@ -20,4 +20,7 @@
     <string name="T_meal_of_the_day">Meal of the day</string>
     <string name="T_cook_now">Cook Now</string>
     <string name="T_user_icon">user icon</string>
+    <string name="T_ingredients">Ingredients</string>
+    <string name="T_instructions">Instructions</string>
+    <string name="T_video_tutorial">Video Tutorial</string>
 </resources>
