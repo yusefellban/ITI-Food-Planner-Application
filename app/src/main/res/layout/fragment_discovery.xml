@@ -1,0 +1,137 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="25dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/discoveryTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/T_what_are_you_craving"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"
+        android:textColor="@color/btn_background"
+        />
+
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/T_search_recipes_ingredients"
+        app:menu="@menu/search_bar_menu"
+        android:layout_below="@+id/discoveryTitleText"
+       />
+
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="Search recipes..."
+       >
+    </com.google.android.material.search.SearchView>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:singleSelection="true"
+        android:layout_marginTop="140dp"
+        android:layout_centerHorizontal="true">
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipCategory"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/T_category" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipIngredient"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:text="@string/T_ingredient" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipCountry"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:text="@string/T_country" />
+
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <LinearLayout
+        android:id="@+id/discoveryDividerResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chipGroup"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/btn_background" />
+
+        <TextView
+            android:id="@+id/discoveryFilterResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="resalt"
+            android:textColor="@color/logo_color"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/btn_background" />
+    </LinearLayout>
+
+
+<!--    Add filter -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/discoveryRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/discoveryDividerResult"
+        android:layout_marginTop="15dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvIngredient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/discoveryDividerResult"
+        android:layout_marginTop="15dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@id/discoveryDividerResult"
+        android:layout_marginTop="15dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+</RelativeLayout>

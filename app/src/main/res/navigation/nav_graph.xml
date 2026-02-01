@@ -58,4 +58,9 @@
             android:name="SelectedMeal"
             app:argType="com.example.foodplanner.wrapper.SelectedMeal" />
     </fragment>
+    <fragment
+        android:id="@+id/discoveryFragment"
+        android:name="com.example.foodplanner.DiscoveryFragment"
+        android:label="fragment_discovery"
+        tools:layout="@layout/fragment_discovery" />
 </navigation>
