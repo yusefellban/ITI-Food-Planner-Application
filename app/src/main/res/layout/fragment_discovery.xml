@@ -33,7 +33,7 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Search recipes..."
+        android:hint="@string/T_search_recipes"
        >
     </com.google.android.material.search.SearchView>
 
@@ -50,6 +50,7 @@
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/T_category" />
 
         <com.google.android.material.chip.Chip
@@ -115,23 +116,6 @@
         android:layout_marginTop="15dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvIngredient"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/discoveryDividerResult"
-        android:layout_marginTop="15dp"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCountry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_below="@id/discoveryDividerResult"
-        android:layout_marginTop="15dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
 </RelativeLayout>

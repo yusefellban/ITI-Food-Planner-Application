@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.Entity.Category;
+import com.example.foodplanner.Entity.Country;
 import com.example.foodplanner.R;
 
 import java.util.ArrayList;
@@ -31,7 +32,10 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (viewType == 1) { // Country
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dicovery_catigories_list, parent, false);
             return new CaticoryViewHolder(view);
-        }else {
+        } else if (viewType == 2) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.discovery_country_list, parent, false);
+            return new CountryViewHolder(view);
+        } else {
             return null;
         }
     }
@@ -41,6 +45,9 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ChipSelectedType item = itemList.get(position);
         if (holder instanceof CaticoryViewHolder) {
             ((CaticoryViewHolder) holder).bind((Category) item);
+        } else if (holder instanceof  CountryViewHolder) {
+            ((CountryViewHolder) holder).bind((Country) item);
+
         }
 
     }
@@ -64,6 +71,18 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             TextView categoryName=itemView.findViewById(R.id.categoryName);
             categoryName.setText(category.getName());
             Glide.with(itemView.getContext()).load(category.getImageUrl()).circleCrop().into(categoryImage);
+
+
+        }
+    }
+
+    static class CountryViewHolder extends RecyclerView.ViewHolder {
+        public CountryViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+        void bind(Country country) {
+            ImageView countryImage=itemView.findViewById(R.id.countryImage);
+            Glide.with(itemView.getContext()).load(country.getImageUrl()).circleCrop().into(countryImage);
 
 
         }

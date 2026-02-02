@@ -1,6 +1,10 @@
 package com.example.foodplanner.service;
 
+import com.example.foodplanner.Entity.Country;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CountryCodeService {
@@ -51,4 +55,28 @@ public class CountryCodeService {
         if (areaName == null) return null;
         return areaToCodeMap.get(areaName);
     }
+    public static List<String> getAllAreas() {
+        return new ArrayList<>(areaToCodeMap.keySet());
+    }
+    public static String getImageUrl(String areaName) {
+        if (areaName == null) return null;
+
+        String code = getCountryCode(areaName);
+        if (code == null) return null;
+
+        return "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";
+    }
+
+    public static List<Country> getAllCountries() {
+        List<Country> countries = new ArrayList<>();
+
+        for (String areaName : areaToCodeMap.keySet()) {
+            Country country = new Country();
+            country.setName(areaName);
+            countries.add(country);
+        }
+
+        return countries;
+    }
+
 }

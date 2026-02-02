@@ -43,6 +43,7 @@ public class HomeCarouselAdapter extends RecyclerView.Adapter<HomeCarouselAdapte
         Glide.with(context).load(meal.getThumbnailUrl()).into(holder.bgImage);
 
         String code = CountryCodeService.getCountryCode(meal.getArea());
+
         if (code != null) {
             String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";
             Glide.with(context).load(flagUrl).circleCrop().into(holder.flagImage);
