@@ -45,6 +45,8 @@ public class FilteredMealsFragment extends Fragment {
         //get selected item
         SendSelectedItem selectedItem = FilteredMealsFragmentArgs.fromBundle(getArguments()).getSendSelectedItem();
 
+
+
         GetApiService.getAllFilteredMeals(selectedItem, new OnMealsLoadedListener() {
             @Override
             public void onSuccess(List<Meal> meals) {

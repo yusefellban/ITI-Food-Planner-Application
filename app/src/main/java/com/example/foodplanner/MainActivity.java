@@ -3,6 +3,7 @@ package com.example.foodplanner;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.core.splashscreen.SplashScreen;
 
@@ -15,7 +16,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,17 +54,44 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNav, navController);
 
 
-/// hide nav bar in specific screens
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.loginFragment || destination.getId() == R.id.registrationFragment
-                    ||destination.getId() == R.id.splashFragment || destination.getId()==R.id.mealDetailsFragment) {
 
-                bottomNav.setVisibility(View.GONE);
+/// hide nav bar in specific screens
+
+        BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
+        FloatingActionButton fab = findViewById(R.id.fab);
+
+        bottomAppBar.post(() -> {
+            MaterialShapeDrawable shapeDrawable = (MaterialShapeDrawable) bottomAppBar.getBackground();
+            shapeDrawable.setShapeAppearanceModel(
+                    shapeDrawable.getShapeAppearanceModel()
+                            .toBuilder()
+                            .setAllCorners(CornerFamily.ROUNDED, 120f)
+                            .build()
+            );
+        });
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.loginFragment ||
+                    destination.getId() == R.id.registrationFragment ||
+                    destination.getId() == R.id.splashFragment ||
+                    destination.getId() == R.id.mealDetailsFragment) {
+
+                bottomAppBar.setVisibility(View.GONE);
+                fab.hide();
             } else {
-                bottomNav.setVisibility(View.VISIBLE);
+
+                bottomAppBar.setVisibility(View.VISIBLE);
+                fab.show();
+
+                bottomAppBar.performShow();
+
+                fab.animate().translationY(0).setDuration(50).start();
             }
         });
 
 
+
     }
+
+
 }

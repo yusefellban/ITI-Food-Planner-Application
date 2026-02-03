@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/text_bg">
+
+
+    <ImageView
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_gravity="center"
+    android:src="@drawable/ic_user_guest"
+    android:tint="@color/nav_green" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="تأكيد الطلب"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:textColor="#1B4332"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="هل أنت متأكد من اختيار هذا العنصر؟"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:textColor="#666666"/>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="تأكيد"
+        android:backgroundTint="@color/nav_green"
+        app:cornerRadius="12dp"/>
+</LinearLayout>

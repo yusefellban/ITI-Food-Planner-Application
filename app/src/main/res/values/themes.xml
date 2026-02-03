@@ -16,4 +16,10 @@
     <style name="RoundedCornerImage">
         <item name="cornerSize">32dp</item>
     </style>
+
+    <style name="ShapeAppearance.Circle" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="ShapeAppearance.BottomBar" parent="">
+        <item name="cornerSize">28dp</item> </style>
 </resources>
