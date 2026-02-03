@@ -62,5 +62,21 @@
         android:id="@+id/discoveryFragment"
         android:name="com.example.foodplanner.DiscoveryFragment"
         android:label="fragment_discovery"
-        tools:layout="@layout/fragment_discovery" />
+        tools:layout="@layout/fragment_discovery" >
+        <action
+            android:id="@+id/action_discoveryFragment_to_filteredMealsFragment"
+            app:destination="@id/filteredMealsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filteredMealsFragment"
+        android:name="com.example.foodplanner.FilteredMealsFragment"
+        android:label="fragment_filtered_meals"
+        tools:layout="@layout/fragment_filtered_meals" >
+        <argument android:name="SendSelectedItem"
+            app:argType="com.example.foodplanner.wrapper.SendSelectedItem"
+            />
+        <action
+            android:id="@+id/action_filteredMealsFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
 </navigation>

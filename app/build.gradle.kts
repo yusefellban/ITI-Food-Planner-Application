@@ -59,6 +59,6 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.5.3")
     implementation("androidx.navigation:navigation-ui:2.5.3")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     implementation("com.google.android.material:material:1.11.0")
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:13.0.0")
 }

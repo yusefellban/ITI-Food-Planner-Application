@@ -43,6 +43,9 @@ public class DiscoveryFragment extends Fragment {
 
     private DiscoveryAdapter discoveryAdapter;
     private RecyclerView recyclerView;
+    private Chip chipIngredient;
+    private Chip chipCategory;
+    private Chip chipCountry;
 
 
     public DiscoveryFragment() {
@@ -66,6 +69,9 @@ public class DiscoveryFragment extends Fragment {
         searchView.setupWithSearchBar(searchBar);
         chipGroup = view.findViewById(R.id.chipGroup);
         recyclerView = view.findViewById(R.id.discoveryRecyclerView);
+        chipIngredient = view.findViewById(R.id.chipIngredient);
+        chipCategory = view.findViewById(R.id.chipCategory);
+        chipCountry = view.findViewById(R.id.chipCountry);
 
 
         discoveryAdapter = new DiscoveryAdapter();
@@ -91,13 +97,15 @@ public class DiscoveryFragment extends Fragment {
                     discoveryAdapter.setList(countryList);
                 }
 
-            } else {
+            } else if(id == R.id.chipCategory){
                 if (categoryList == null || categoryList.isEmpty()) {
                     setCategoriesLit();
                 } else {
                     discoveryAdapter.setList(categoryList);
                 }
             }
+
+
         });
 
 
@@ -145,5 +153,13 @@ public class DiscoveryFragment extends Fragment {
         } else {
             countryList = new ArrayList<>();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        chipCountry.setChecked(false);
+        chipIngredient.setChecked(false);
+        chipCategory.setChecked(true);
     }
 }

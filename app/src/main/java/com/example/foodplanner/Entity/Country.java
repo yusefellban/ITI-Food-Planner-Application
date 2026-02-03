@@ -4,6 +4,7 @@ import com.example.foodplanner.adapter.ChipSelectedType;
 import com.example.foodplanner.service.CountryCodeService;
 
 public class Country implements ChipSelectedType {
+    private String id;
    private String name;
 
     public String getName() {
@@ -25,5 +26,13 @@ public class Country implements ChipSelectedType {
         if (code == null) return null;
 
         return "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

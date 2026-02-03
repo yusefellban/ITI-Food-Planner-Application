@@ -41,6 +41,21 @@ public class DetailsScreenInstructionAdapter extends RecyclerView.Adapter<Detail
       holder.title.setText(instructionTitle);
       holder.stepInstruction.setText(instruction);
 
+      /// Animation
+        holder.itemView.setAlpha(0f);
+        holder.itemView.setScaleX(0.9f);
+        holder.itemView.setScaleY(0.9f);
+        holder.itemView.setTranslationY(50f);
+
+        holder.itemView.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .translationY(0f)
+                .setDuration(400)
+                .setStartDelay(position * 50L) // حركة تتابعية (Cascade)
+                .start();
+
     }
 
     @Override

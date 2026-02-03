@@ -104,17 +104,9 @@ public class MealDetailsFragment extends Fragment {
         ///  force the video end with screen lifecycle
         youtubePlayerView = view.findViewById(R.id.player_view);
         getLifecycle().addObserver(youtubePlayerView);
+//
 
-        String apiUrl = "https://www.youtube.com/watch?v=IhwPQL9dFYc";
-        String videoId = getYoutubeVideoId(apiUrl);
-        youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NonNull YouTubePlayer youtubePlayer) {
-                if (videoId != null) {
-                    youtubePlayer.cueVideo(videoId, 0);
-                }
-            }
-        });
+
     }
 
 
@@ -123,6 +115,7 @@ public class MealDetailsFragment extends Fragment {
         RetrofitClient.getApiService().getMealByID(String.valueOf(selectedMeal.getId())).enqueue(new Callback<MealResponse>() {
             @Override
             public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (!isAdded() || getContext() == null) return;
                 Meal myMeal = response.body().getMeals().get(0);
 
                 String code = CountryCodeService.getCountryCode(myMeal.getArea());
@@ -149,6 +142,7 @@ public class MealDetailsFragment extends Fragment {
 
 
                 /// load youtube video
+                setupYoutubePlayer(myMeal.getYoutubeUrl());
 
             }
 
@@ -167,37 +161,47 @@ public class MealDetailsFragment extends Fragment {
     }
 
     private String getYoutubeVideoId(String youtubeUrl) {
-        if (youtubeUrl == null || youtubeUrl.trim().isEmpty()) {
-            return null;
+        if (youtubeUrl == null || youtubeUrl.isEmpty()) return null;
+
+        String videoId = null;
+        if (youtubeUrl.contains("v=")) {
+            String[] parts = youtubeUrl.split("v=");
+            videoId = parts[1];
+
+            int ampersandPosition = videoId.indexOf("&");
+            if (ampersandPosition != -1) {
+                videoId = videoId.substring(0, ampersandPosition);
+            }
         }
 
-        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
-
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(youtubeUrl);
-
-        if (matcher.find()) {
-            String id = matcher.group();
-            android.util.Log.d("YOUTUBE_ID", "Extracted ID: " + id);
-            return id;
+        //  youtu.be
+        else if (youtubeUrl.contains("youtu.be/")) {
+            String[] parts = youtubeUrl.split("youtu.be/");
+            videoId = parts[1];
+            int questionMarkPosition = videoId.indexOf("?");
+            if (questionMarkPosition != -1) {
+                videoId = videoId.substring(0, questionMarkPosition);
+            }
         }
 
-        return null;
+        return videoId;
     }
-/// /////////////
-private String getEmbedUrl(String url) {
-    // اللينك: https://www.youtube.com/watch?v=K0ipnz4fwJI
-    if (url.contains("v=")) {
-        // بنقص النص من بعد "v="
-        String videoId = url.substring(url.indexOf("v=") + 2);
 
-        // لو اللينك فيه علامات تانية بعد الـ ID (زي &feature=...) بنشيلها
-        if (videoId.contains("&")) {
-            videoId = videoId.substring(0, videoId.indexOf("&"));
-        }
-        return "https://www.youtube.com/embed/" + videoId;
+
+
+    private void setupYoutubePlayer(String videoUrl) {
+        if (videoUrl == null || videoUrl.isEmpty()) return;
+
+        youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                String videoId = getYoutubeVideoId(videoUrl);
+                if (videoId != null) {
+                    youTubePlayer.cueVideo(videoId, 0);
+                }
+            }
+        });
     }
-    return url;
-}
+
 
 }

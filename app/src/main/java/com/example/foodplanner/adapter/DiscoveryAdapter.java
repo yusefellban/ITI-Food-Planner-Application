@@ -1,5 +1,6 @@
 package com.example.foodplanner.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,13 +8,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.foodplanner.DiscoveryFragment;
+import com.example.foodplanner.DiscoveryFragmentDirections;
 import com.example.foodplanner.Entity.Category;
 import com.example.foodplanner.Entity.Country;
 import com.example.foodplanner.Entity.Ingredient;
+import com.example.foodplanner.HomeFragmentDirections;
 import com.example.foodplanner.R;
+import com.example.foodplanner.wrapper.SelectedMeal;
+import com.example.foodplanner.wrapper.SendSelectedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,14 +57,58 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ChipSelectedType item = itemList.get(position);
         if (holder instanceof CatigoryViewHolder) {
             ((CatigoryViewHolder) holder).bind((Category) item);
+            holder.itemView.setOnClickListener((v) -> {
+
+                SendSelectedItem selectedMeal = new SendSelectedItem(
+                        Integer.parseInt(((Category) item).getId()),
+                        ((Category) item).getName(),
+                        ((Category) item).getImageUrl(), 1
+                );
+                Log.d("hahah", "ttt" + selectedMeal.toString());
+
+                DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action =
+                        DiscoveryFragmentDirections.actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
+
+                Navigation.findNavController(v).navigate(action);
+            });
+
         } else if (holder instanceof CountryViewHolder) {
             ((CountryViewHolder) holder).bind((Country) item);
+            holder.itemView.setOnClickListener((v) -> {
+
+                SendSelectedItem selectedMeal = new SendSelectedItem(
+                        88,
+                        ((Country) item).getName(),
+                        ((Country) item).getImageUrl(), 3
+                );
+                Log.d("hahah", "ttt" + selectedMeal.toString());
+
+                DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action =
+                        DiscoveryFragmentDirections.actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
+
+                Navigation.findNavController(v).navigate(action);
+            });
 
         } else if (holder instanceof IngredientViewHolder) {
             ((IngredientViewHolder) holder).bind((Ingredient) item);
+            holder.itemView.setOnClickListener((v) -> {
+
+                SendSelectedItem selectedMeal = new SendSelectedItem(
+                        Integer.parseInt(((Ingredient) item).getId()),
+                        ((Ingredient) item).getName(),
+                        ((Ingredient) item).getImageUrl(), 2
+                );
+                Log.d("hahah", "ttt" + selectedMeal.toString());
+
+                DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action =
+                        DiscoveryFragmentDirections.actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
+
+                Navigation.findNavController(v).navigate(action);
+            });
 
         }
 
+        /// Animations
 
     }
 
@@ -80,7 +132,10 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ImageView categoryImage = itemView.findViewById(R.id.categoryImage);
             TextView categoryName = itemView.findViewById(R.id.categoryName);
             categoryName.setText(category.getName());
-            Glide.with(itemView.getContext()).load(category.getImageUrl()).circleCrop().into(categoryImage);
+            Glide.with(itemView.getContext())
+                    .load(category.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .circleCrop().into(categoryImage);
 
 
         }
@@ -93,7 +148,9 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         void bind(Country country) {
             ImageView countryImage = itemView.findViewById(R.id.countryImage);
-            Glide.with(itemView.getContext()).load(country.getImageUrl()).circleCrop().into(countryImage);
+            Glide.with(itemView.getContext()).load(country.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .circleCrop().into(countryImage);
 
 
         }
@@ -102,11 +159,14 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     static class IngredientViewHolder extends RecyclerView.ViewHolder {
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
+
         }
 
         void bind(Ingredient ingredient) {
             ImageView ingredientImage = itemView.findViewById(R.id.ingredientImage);
-            Glide.with(itemView.getContext()).load(ingredient.getImageUrl()).circleCrop().into(ingredientImage);
+            Glide.with(itemView.getContext()).load(ingredient.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .circleCrop().into(ingredientImage);
             TextView ingredientName = itemView.findViewById(R.id.ingredientName);
             ingredientName.setText(ingredient.getName());
         }

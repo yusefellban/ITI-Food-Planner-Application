@@ -176,7 +176,10 @@
                 android:id="@+id/player_view"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_below="@+id/videoTutorialText" />
+                android:layout_below="@+id/videoTutorialText"
+
+                app:videoId="XTIxgbEeJ84"
+                app:autoPlay="true" />
 
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
