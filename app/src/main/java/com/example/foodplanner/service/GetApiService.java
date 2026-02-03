@@ -3,6 +3,7 @@ package com.example.foodplanner.service;
 import android.util.Log;
 
 import com.example.foodplanner.Entity.CategoriesResponse;
+import com.example.foodplanner.Entity.IngredientResponse;
 import com.example.foodplanner.remote.MealApiService;
 
 import retrofit2.Call;
@@ -36,6 +37,26 @@ public class GetApiService {
       });
    }
 
+   public static void getAllIngredients(IngredientGetResponse ingredientGetResponse){
+       apiService.getAllIngredients().enqueue(new Callback<IngredientResponse>() {
+           @Override
+           public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
+               if (response.body() != null && response.body().getIngredients() != null) {
+                   ingredientGetResponse.onSuccess(response.body().getIngredients());
+               }else {
+                   ingredientGetResponse.onError("No Ingredients found");
+               }
+           }
+
+           @Override
+           public void onFailure(Call<IngredientResponse> call, Throwable t) {
+               ingredientGetResponse.onError(t.getMessage());
+               Log.d("API-SERVICES", " can not get any Ingredients");
+           }
+       });
+
+
+   }
 
 
     public static Retrofit getRetrofit() {

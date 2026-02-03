@@ -16,11 +16,13 @@ import android.view.ViewGroup;
 
 import com.example.foodplanner.Entity.Category;
 import com.example.foodplanner.Entity.Country;
+import com.example.foodplanner.Entity.Ingredient;
 import com.example.foodplanner.adapter.ChipSelectedType;
 import com.example.foodplanner.adapter.DiscoveryAdapter;
 import com.example.foodplanner.service.CategoriesGetResponse;
 import com.example.foodplanner.service.CountryCodeService;
 import com.example.foodplanner.service.GetApiService;
+import com.example.foodplanner.service.IngredientGetResponse;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.search.SearchBar;
@@ -36,14 +38,12 @@ public class DiscoveryFragment extends Fragment {
 
     /// to cashing the list
     private List<ChipSelectedType> categoryList;
+    private List<ChipSelectedType> ingredientList;
     private List<ChipSelectedType> countryList;
 
     private DiscoveryAdapter discoveryAdapter;
     private RecyclerView recyclerView;
-    private List<ChipSelectedType> masterList = new ArrayList<>();
- private Chip chipCategory;
- private Chip chipCountry;
- private Chip chipIngredient;
+
 
     public DiscoveryFragment() {
         // Required empty public constructor
@@ -66,9 +66,7 @@ public class DiscoveryFragment extends Fragment {
         searchView.setupWithSearchBar(searchBar);
         chipGroup = view.findViewById(R.id.chipGroup);
         recyclerView = view.findViewById(R.id.discoveryRecyclerView);
-        chipCountry = view.findViewById(R.id.chipCountry);
-        chipIngredient = view.findViewById(R.id.chipIngredient);
-        chipCategory = view.findViewById(R.id.chipCategory);
+
 
         discoveryAdapter = new DiscoveryAdapter();
         recyclerView.setAdapter(discoveryAdapter);
@@ -80,21 +78,25 @@ public class DiscoveryFragment extends Fragment {
             if (checkedIds.isEmpty()) return;
 
             int id = checkedIds.get(0);
-            if (id == R.id.chipCategory) {
-                if (categoryList == null || categoryList.isEmpty()) {
-                    setCategoriesLit();
-
-                }else {
-                    discoveryAdapter.setList(categoryList);
+            if (id == R.id.chipIngredient) {
+                if (ingredientList == null || ingredientList.isEmpty()) {
+                    setIngredientsList();
+                } else {
+                    discoveryAdapter.setList(ingredientList);
                 }
-
-            } else if (id==R.id.chipCountry) {
+            } else if (id == R.id.chipCountry) {
                 if (countryList == null || countryList.isEmpty()) {
                     setCountryLit();
-                }else {
+                } else {
                     discoveryAdapter.setList(countryList);
                 }
 
+            } else {
+                if (categoryList == null || categoryList.isEmpty()) {
+                    setCategoriesLit();
+                } else {
+                    discoveryAdapter.setList(categoryList);
+                }
             }
         });
 
@@ -107,19 +109,38 @@ public class DiscoveryFragment extends Fragment {
         GetApiService.getAllCategories(new CategoriesGetResponse() {
             @Override
             public void onSuccess(List<Category> categories) {
-                categoryList = (List<ChipSelectedType>)(List<?>) categories;//Hack
+                categoryList = (List<ChipSelectedType>) (List<?>) categories;// Ugly Hack
                 discoveryAdapter.setList(categoryList);
             }
+
             @Override
             public void onError(String error) {
                 Log.e("DiscoveryFragment", error);
             }
         });
     }
+
+    public void setIngredientsList() {
+
+        GetApiService.getAllIngredients(new IngredientGetResponse() {
+            @Override
+            public void onSuccess(List<Ingredient> ingredients) {
+                ingredientList = (List<ChipSelectedType>) (List<?>) ingredients;// Ugly Hack
+                discoveryAdapter.setList(ingredientList);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("DiscoveryFragment", error);
+            }
+        });
+
+    }
+
     public void setCountryLit() {
         List<Country> areas = CountryCodeService.getAllCountries();
         if (areas != null) {
-            countryList = (List<ChipSelectedType>)(List<?>) areas;
+            countryList = (List<ChipSelectedType>) (List<?>) areas;
             discoveryAdapter.setList(countryList);
         } else {
             countryList = new ArrayList<>();

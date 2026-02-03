@@ -72,9 +72,7 @@ public class MealDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_meal_details, container, false);
-
         return view;
-
     }
 
     @Override
@@ -93,6 +91,7 @@ public class MealDetailsFragment extends Fragment {
 
 
         detailsMealName.setText(selectedMeal.getName());
+
         Glide.with(requireContext())
                 .load(selectedMeal.getImageURL())
                 .placeholder(R.drawable.rounded_image)

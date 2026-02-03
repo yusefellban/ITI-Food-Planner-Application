@@ -1,6 +1,7 @@
 package com.example.foodplanner.remote;
 
 import com.example.foodplanner.Entity.CategoriesResponse;
+import com.example.foodplanner.Entity.IngredientResponse;
 import com.example.foodplanner.wrapper.MealResponse;
 
 import retrofit2.Call;
@@ -16,4 +17,7 @@ public interface MealApiService {
 
     @GET("categories.php")
     Call<CategoriesResponse> getAllCategories();
+
+    @GET("list.php?i=list")
+    Call<IngredientResponse> getAllIngredients();
 }
