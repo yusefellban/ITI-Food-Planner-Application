@@ -18,27 +18,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="تأكيد الطلب"
+        android:text=" Please Sin Up"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginTop="16dp"
         android:textColor="#1B4332"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="هل أنت متأكد من اختيار هذا العنصر؟"
-        android:gravity="center"
-        android:layout_marginTop="8dp"
-        android:textColor="#666666"/>
-
     <Button
         android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="تأكيد"
+        android:text="Go to Sign Up"
         android:backgroundTint="@color/nav_green"
         app:cornerRadius="12dp"/>
 </LinearLayout>

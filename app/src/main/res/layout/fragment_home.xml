@@ -78,6 +78,7 @@
 
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ffa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
