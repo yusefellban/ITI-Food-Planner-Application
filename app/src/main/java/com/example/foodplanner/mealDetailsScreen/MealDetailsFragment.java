@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.mealDetailsScreen;
 
 import android.os.Bundle;
 
@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.R;
+import com.example.foodplanner.datasource.remote.MealCallback;
+import com.example.foodplanner.datasource.remote.MealDetailsRemoteDataSource;
 import com.example.foodplanner.model.Meal;
-import com.example.foodplanner.adapter.DetailsScreenIngredientAdapter;
-import com.example.foodplanner.adapter.DetailsScreenInstructionAdapter;
-import com.example.foodplanner.MealDetailsRemote.RetrofitClient;
 import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
-import com.example.foodplanner.model.wrapper.MealResponse;
 import com.example.foodplanner.model.wrapper.SelectedMeal;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -30,11 +30,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MealDetailsFragment extends Fragment {
@@ -50,8 +45,8 @@ public class MealDetailsFragment extends Fragment {
 
     private YouTubePlayerView youtubePlayerView;
 
-
     private SelectedMeal selectedMeal;
+    private MealDetailsRemoteDataSource selectedMealDataSource;
 
 
     public MealDetailsFragment() {
@@ -78,6 +73,8 @@ public class MealDetailsFragment extends Fragment {
         detailsInstructionRecyclerView = view.findViewById(R.id.detailsInstructionRecyclerView);
         detailsIngredientsItems = view.findViewById(R.id.detailsIngredientsItems);
 
+        selectedMealDataSource= new MealDetailsRemoteDataSource();
+
         selectedMeal = MealDetailsFragmentArgs.fromBundle(getArguments()).getSelectedMeal();
 
 
@@ -100,15 +97,10 @@ public class MealDetailsFragment extends Fragment {
 
     }
 
-
     private void fetchSelectedMeal() {
-
-        RetrofitClient.getApiService().getMealByID(String.valueOf(selectedMeal.getId())).enqueue(new Callback<MealResponse>() {
+        selectedMealDataSource.getMealDetails(selectedMeal.getId(), new MealCallback() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (!isAdded() || getContext() == null) return;
-                Meal myMeal = response.body().getMeals().get(0);
-
+            public void onSuccess(Meal myMeal) {
                 String code = CountryCodeLocalDataSource.getCountryCode(myMeal.getArea());
                 if (code != null) {
                     detailsAreaIcon.setVisibility(View.VISIBLE);
@@ -134,12 +126,11 @@ public class MealDetailsFragment extends Fragment {
 
                 /// load youtube video
                 setupYoutubePlayer(myMeal.getYoutubeUrl());
-
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-
+            public void onError(String error) {
+                Log.d( "onError-Selected Meal: ",error);
             }
         });
     }

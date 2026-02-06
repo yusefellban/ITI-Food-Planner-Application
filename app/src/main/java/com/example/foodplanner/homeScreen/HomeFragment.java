@@ -25,7 +25,7 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
-import com.example.foodplanner.datasource.remote.RandomMealCallback;
+import com.example.foodplanner.datasource.remote.MealCallback;
 import com.example.foodplanner.datasource.remote.RandomMealsListCallback;
 import com.example.foodplanner.model.wrapper.SelectedMeal;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment {
     private void fetchRandomMeal() {
 
 
-        remoteDataSource.getRandomMeal(new RandomMealCallback() {
+        remoteDataSource.getRandomMeal(new MealCallback() {
             @Override
             public void onSuccess(Meal meal) {
 //                Log.d("MEAL", meal.toString());

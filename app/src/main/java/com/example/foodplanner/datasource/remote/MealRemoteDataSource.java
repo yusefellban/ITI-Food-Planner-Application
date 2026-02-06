@@ -24,7 +24,7 @@ public class MealRemoteDataSource {
     }
 
     /// home screen
-    public void getRandomMeal(RandomMealCallback callback) {
+    public void getRandomMeal(MealCallback callback) {
 
         mealApis.getRandomMeal().enqueue(new Callback<MealResponse>() {
             @Override

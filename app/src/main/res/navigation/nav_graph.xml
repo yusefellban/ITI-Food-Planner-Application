@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
-        android:name="com.example.foodplanner.MealDetailsFragment"
+        android:name="com.example.foodplanner.mealDetailsScreen.MealDetailsFragment"
         android:label="fragment_meal_details"
         tools:layout="@layout/fragment_meal_details" >
         <argument
