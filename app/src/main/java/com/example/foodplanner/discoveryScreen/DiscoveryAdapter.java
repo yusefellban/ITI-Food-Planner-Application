@@ -1,4 +1,4 @@
-package com.example.foodplanner.adapter;
+package com.example.foodplanner.discoveryScreen;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.foodplanner.DiscoveryFragmentDirections;
 import com.example.foodplanner.model.Category;
 import com.example.foodplanner.model.Country;
 import com.example.foodplanner.model.Ingredient;

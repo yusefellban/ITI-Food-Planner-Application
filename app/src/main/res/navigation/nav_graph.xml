@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/discoveryFragment"
-        android:name="com.example.foodplanner.DiscoveryFragment"
+        android:name="com.example.foodplanner.discoveryScreen.DiscoveryFragment"
         android:label="fragment_discovery"
         tools:layout="@layout/fragment_discovery" >
         <action

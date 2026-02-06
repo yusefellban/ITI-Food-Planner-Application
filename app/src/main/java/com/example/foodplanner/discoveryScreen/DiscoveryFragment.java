@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.discoveryScreen;
 
 import android.os.Bundle;
 
@@ -13,15 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.foodplanner.R;
+import com.example.foodplanner.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.model.Category;
 import com.example.foodplanner.model.Country;
 import com.example.foodplanner.model.Ingredient;
-import com.example.foodplanner.adapter.ChipSelectedType;
-import com.example.foodplanner.adapter.DiscoveryAdapter;
-import com.example.foodplanner.service.CategoriesGetResponse;
+import com.example.foodplanner.datasource.remote.CategoriesResponseCallback;
 import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
-import com.example.foodplanner.service.GetApiService;
-import com.example.foodplanner.service.IngredientGetResponse;
+import com.example.foodplanner.datasource.remote.IngredientResponseCallback;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.search.SearchBar;
@@ -45,6 +44,9 @@ public class DiscoveryFragment extends Fragment {
     private Chip chipIngredient;
     private Chip chipCategory;
     private Chip chipCountry;
+
+    private MealRemoteDataSource remoteDataSource;
+
 
 
     public DiscoveryFragment() {
@@ -71,6 +73,8 @@ public class DiscoveryFragment extends Fragment {
         chipIngredient = view.findViewById(R.id.chipIngredient);
         chipCategory = view.findViewById(R.id.chipCategory);
         chipCountry = view.findViewById(R.id.chipCountry);
+
+        remoteDataSource=new MealRemoteDataSource();
 
 
         discoveryAdapter = new DiscoveryAdapter();
@@ -113,7 +117,7 @@ public class DiscoveryFragment extends Fragment {
 
 
     public void setCategoriesLit() {
-        GetApiService.getAllCategories(new CategoriesGetResponse() {
+        remoteDataSource.getAllCategories(new CategoriesResponseCallback() {
             @Override
             public void onSuccess(List<Category> categories) {
                 categoryList = (List<ChipSelectedType>) (List<?>) categories;// Ugly Hack
@@ -122,14 +126,14 @@ public class DiscoveryFragment extends Fragment {
 
             @Override
             public void onError(String error) {
-                Log.e("DiscoveryFragment", error);
+                Log.e("Discovery-Fragment", error);
             }
         });
     }
 
     public void setIngredientsList() {
 
-        GetApiService.getAllIngredients(new IngredientGetResponse() {
+        remoteDataSource.getAllIngredients(new IngredientResponseCallback() {
             @Override
             public void onSuccess(List<Ingredient> ingredients) {
                 ingredientList = (List<ChipSelectedType>) (List<?>) ingredients;// Ugly Hack

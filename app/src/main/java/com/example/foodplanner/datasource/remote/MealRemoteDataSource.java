@@ -1,5 +1,9 @@
 package com.example.foodplanner.datasource.remote;
 
+import android.util.Log;
+
+import com.example.foodplanner.model.CategoriesResponse;
+import com.example.foodplanner.model.IngredientResponse;
 import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.network.MealApis;
 import com.example.foodplanner.network.Network;
@@ -19,6 +23,7 @@ public class MealRemoteDataSource {
         mealApis = Network.getInstance().getMealsAPI();
     }
 
+    /// home screen
     public void getRandomMeal(RandomMealCallback callback) {
 
         mealApis.getRandomMeal().enqueue(new Callback<MealResponse>() {
@@ -68,4 +73,46 @@ public class MealRemoteDataSource {
             });
         }
     }
+
+    /// Discovery screen
+
+    public void getAllCategories(CategoriesResponseCallback callback) {
+        mealApis.getAllCategories().enqueue(new Callback<CategoriesResponse>() {
+            @Override
+            public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
+                if (response.body() != null && response.body().getCategories() != null) {
+                    callback.onSuccess(response.body().getCategories());
+                } else {
+                    callback.onError("No Categories found");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoriesResponse> call, Throwable t) {
+                callback.onError(t.getMessage());
+                Log.d("API-SERVICES", " can not get any categories");
+            }
+        });
+    }
+
+    public void getAllIngredients(IngredientResponseCallback ingredientResponseCallback) {
+        mealApis.getAllIngredients().enqueue(new Callback<IngredientResponse>() {
+            @Override
+            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
+                if (response.body() != null && response.body().getIngredients() != null) {
+                    ingredientResponseCallback.onSuccess(response.body().getIngredients());
+                } else {
+                    ingredientResponseCallback.onError("No Ingredients found");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IngredientResponse> call, Throwable t) {
+                ingredientResponseCallback.onError(t.getMessage());
+                Log.d("API-SERVICES", " can not get any Ingredients");
+            }
+        });
+    }
+
+
 }

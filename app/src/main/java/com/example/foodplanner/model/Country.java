@@ -1,6 +1,6 @@
 package com.example.foodplanner.model;
 
-import com.example.foodplanner.adapter.ChipSelectedType;
+import com.example.foodplanner.discoveryScreen.ChipSelectedType;
 import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
 
 public class Country implements ChipSelectedType {

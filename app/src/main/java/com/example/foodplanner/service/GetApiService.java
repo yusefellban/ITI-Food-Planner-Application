@@ -2,6 +2,8 @@ package com.example.foodplanner.service;
 
 import android.util.Log;
 
+import com.example.foodplanner.datasource.remote.CategoriesResponseCallback;
+import com.example.foodplanner.datasource.remote.IngredientResponseCallback;
 import com.example.foodplanner.datasource.remote.RandomMealsListCallback;
 import com.example.foodplanner.model.CategoriesResponse;
 import com.example.foodplanner.model.IngredientResponse;
@@ -20,25 +22,6 @@ public class GetApiService {
     private static Retrofit retrofit = null;
 
     private static final MealApis apiService = getRetrofit().create(MealApis.class);
-
-    public static void getAllCategories(CategoriesGetResponse categoriesGetResponse) {
-        apiService.getAllCategories().enqueue(new Callback<CategoriesResponse>() {
-            @Override
-            public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
-                if (response.body() != null && response.body().getCategories() != null) {
-                    categoriesGetResponse.onSuccess(response.body().getCategories());
-                } else {
-                    categoriesGetResponse.onError("No Categories found");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoriesResponse> call, Throwable t) {
-                categoriesGetResponse.onError(t.getMessage());
-                Log.d("API-SERVICES", " can not get any categories");
-            }
-        });
-    }
 
     public static void getAllFilteredMeals(SendSelectedItem selectedItem, RandomMealsListCallback randomMealsListCallback) {
         String selectedItemUrl = getSelectedItemUrl(selectedItem);
@@ -61,26 +44,6 @@ public class GetApiService {
         });
 
     }
-
-    public static void getAllIngredients(IngredientGetResponse ingredientGetResponse) {
-        apiService.getAllIngredients().enqueue(new Callback<IngredientResponse>() {
-            @Override
-            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
-                if (response.body() != null && response.body().getIngredients() != null) {
-                    ingredientGetResponse.onSuccess(response.body().getIngredients());
-                } else {
-                    ingredientGetResponse.onError("No Ingredients found");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<IngredientResponse> call, Throwable t) {
-                ingredientGetResponse.onError(t.getMessage());
-                Log.d("API-SERVICES", " can not get any Ingredients");
-            }
-        });
-    }
-
 
     public static Retrofit getRetrofit() {
         if (retrofit == null) {
