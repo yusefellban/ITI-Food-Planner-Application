@@ -1,6 +1,5 @@
-package com.example.foodplanner.adapter;
+package com.example.foodplanner.homeScreen;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.foodplanner.Entity.Meal;
-import com.example.foodplanner.HomeFragmentDirections;
+import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.R;
-import com.example.foodplanner.service.CountryCodeService;
-import com.example.foodplanner.wrapper.SelectedMeal;
+import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
+import com.example.foodplanner.model.wrapper.SelectedMeal;
 
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class HomeCarouselAdapter extends RecyclerView.Adapter<HomeCarouselAdapte
 
         Glide.with(context).load(meal.getThumbnailUrl()).into(holder.bgImage);
 
-        String code = CountryCodeService.getCountryCode(meal.getArea());
+        String code = CountryCodeLocalDataSource.getCountryCode(meal.getArea());
 
         if (code != null) {
             String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";

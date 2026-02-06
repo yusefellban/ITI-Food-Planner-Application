@@ -13,15 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.foodplanner.DiscoveryFragment;
 import com.example.foodplanner.DiscoveryFragmentDirections;
-import com.example.foodplanner.Entity.Category;
-import com.example.foodplanner.Entity.Country;
-import com.example.foodplanner.Entity.Ingredient;
-import com.example.foodplanner.HomeFragmentDirections;
+import com.example.foodplanner.model.Category;
+import com.example.foodplanner.model.Country;
+import com.example.foodplanner.model.Ingredient;
 import com.example.foodplanner.R;
-import com.example.foodplanner.wrapper.SelectedMeal;
-import com.example.foodplanner.wrapper.SendSelectedItem;
+import com.example.foodplanner.model.wrapper.SendSelectedItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.example.foodplanner.Entity;
+package com.example.foodplanner.model;
 
 import com.example.foodplanner.adapter.ChipSelectedType;
-import com.example.foodplanner.service.CountryCodeService;
+import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
 
 public class Country implements ChipSelectedType {
     private String id;
@@ -22,7 +22,7 @@ public class Country implements ChipSelectedType {
     public String getImageUrl() {
         if (this.name == null) return null;
 
-        String code = CountryCodeService.getCountryCode(this.name);
+        String code = CountryCodeLocalDataSource.getCountryCode(this.name);
         if (code == null) return null;
 
         return "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";

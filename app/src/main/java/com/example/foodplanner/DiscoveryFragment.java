@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -14,13 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.foodplanner.Entity.Category;
-import com.example.foodplanner.Entity.Country;
-import com.example.foodplanner.Entity.Ingredient;
+import com.example.foodplanner.model.Category;
+import com.example.foodplanner.model.Country;
+import com.example.foodplanner.model.Ingredient;
 import com.example.foodplanner.adapter.ChipSelectedType;
 import com.example.foodplanner.adapter.DiscoveryAdapter;
 import com.example.foodplanner.service.CategoriesGetResponse;
-import com.example.foodplanner.service.CountryCodeService;
+import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
 import com.example.foodplanner.service.GetApiService;
 import com.example.foodplanner.service.IngredientGetResponse;
 import com.google.android.material.chip.Chip;
@@ -146,7 +145,7 @@ public class DiscoveryFragment extends Fragment {
     }
 
     public void setCountryLit() {
-        List<Country> areas = CountryCodeService.getAllCountries();
+        List<Country> areas = CountryCodeLocalDataSource.getAllCountries();
         if (areas != null) {
             countryList = (List<ChipSelectedType>) (List<?>) areas;
             discoveryAdapter.setList(countryList);

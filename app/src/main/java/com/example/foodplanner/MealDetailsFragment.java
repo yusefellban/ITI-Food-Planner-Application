@@ -1,8 +1,5 @@
 package com.example.foodplanner;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,24 +7,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.foodplanner.Entity.Meal;
+import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.adapter.DetailsScreenIngredientAdapter;
 import com.example.foodplanner.adapter.DetailsScreenInstructionAdapter;
-import com.example.foodplanner.remote.RetrofitClient;
-import com.example.foodplanner.service.CountryCodeService;
-import com.example.foodplanner.wrapper.MealResponse;
-import com.example.foodplanner.wrapper.SelectedMeal;
+import com.example.foodplanner.MealDetailsRemote.RetrofitClient;
+import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
+import com.example.foodplanner.model.wrapper.MealResponse;
+import com.example.foodplanner.model.wrapper.SelectedMeal;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
@@ -36,8 +29,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -118,7 +109,7 @@ public class MealDetailsFragment extends Fragment {
                 if (!isAdded() || getContext() == null) return;
                 Meal myMeal = response.body().getMeals().get(0);
 
-                String code = CountryCodeService.getCountryCode(myMeal.getArea());
+                String code = CountryCodeLocalDataSource.getCountryCode(myMeal.getArea());
                 if (code != null) {
                     detailsAreaIcon.setVisibility(View.VISIBLE);
                     String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";

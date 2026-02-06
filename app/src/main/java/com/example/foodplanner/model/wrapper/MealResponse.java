@@ -1,6 +1,6 @@
-package com.example.foodplanner.wrapper;
+package com.example.foodplanner.model.wrapper;
 
-import com.example.foodplanner.Entity.Meal;
+import com.example.foodplanner.model.Meal;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 

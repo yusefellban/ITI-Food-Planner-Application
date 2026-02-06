@@ -1,7 +1,7 @@
 package com.example.foodplanner.service;
 
 
-import com.example.foodplanner.Entity.Category;
+import com.example.foodplanner.model.Category;
 
 import java.util.List;
 

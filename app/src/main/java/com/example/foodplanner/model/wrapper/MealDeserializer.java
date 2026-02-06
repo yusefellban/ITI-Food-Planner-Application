@@ -1,11 +1,9 @@
-package com.example.foodplanner.wrapper;
+package com.example.foodplanner.model.wrapper;
 
-import com.example.foodplanner.Entity.Meal;
+import com.example.foodplanner.model.Meal;
 import com.google.gson.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class MealDeserializer implements JsonDeserializer<Meal> {
     @Override

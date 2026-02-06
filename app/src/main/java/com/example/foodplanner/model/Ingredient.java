@@ -1,4 +1,4 @@
-package com.example.foodplanner.Entity;
+package com.example.foodplanner.model;
 
 import com.example.foodplanner.adapter.ChipSelectedType;
 import com.google.gson.annotations.SerializedName;

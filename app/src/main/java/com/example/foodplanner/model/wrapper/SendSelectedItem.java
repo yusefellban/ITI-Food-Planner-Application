@@ -1,4 +1,4 @@
-package com.example.foodplanner.wrapper;
+package com.example.foodplanner.model.wrapper;
 
 import java.io.Serializable;
 

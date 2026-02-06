@@ -12,12 +12,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.foodplanner.Entity.Meal;
-import com.example.foodplanner.FilteredMealsFragment;
+import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.FilteredMealsFragmentDirections;
-import com.example.foodplanner.HomeFragmentDirections;
 import com.example.foodplanner.R;
-import com.example.foodplanner.wrapper.SelectedMeal;
+import com.example.foodplanner.model.wrapper.SelectedMeal;
 
 import java.util.List;
 

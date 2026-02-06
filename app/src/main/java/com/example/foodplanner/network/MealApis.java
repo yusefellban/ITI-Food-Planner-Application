@@ -1,15 +1,15 @@
-package com.example.foodplanner.remote;
+package com.example.foodplanner.network;
 
-import com.example.foodplanner.Entity.CategoriesResponse;
-import com.example.foodplanner.Entity.IngredientResponse;
-import com.example.foodplanner.wrapper.MealResponse;
+import com.example.foodplanner.model.CategoriesResponse;
+import com.example.foodplanner.model.IngredientResponse;
+import com.example.foodplanner.model.wrapper.MealResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
-public interface MealApiService {
+public interface MealApis {
     @GET("random.php")
     Call<MealResponse> getRandomMeal();
 

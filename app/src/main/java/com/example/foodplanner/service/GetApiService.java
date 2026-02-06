@@ -2,11 +2,12 @@ package com.example.foodplanner.service;
 
 import android.util.Log;
 
-import com.example.foodplanner.Entity.CategoriesResponse;
-import com.example.foodplanner.Entity.IngredientResponse;
-import com.example.foodplanner.remote.MealApiService;
-import com.example.foodplanner.wrapper.MealResponse;
-import com.example.foodplanner.wrapper.SendSelectedItem;
+import com.example.foodplanner.datasource.remote.RandomMealsListCallback;
+import com.example.foodplanner.model.CategoriesResponse;
+import com.example.foodplanner.model.IngredientResponse;
+import com.example.foodplanner.network.MealApis;
+import com.example.foodplanner.model.wrapper.MealResponse;
+import com.example.foodplanner.model.wrapper.SendSelectedItem;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,7 +19,7 @@ public class GetApiService {
     private static final String BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
     private static Retrofit retrofit = null;
 
-    private static final MealApiService apiService = getRetrofit().create(MealApiService.class);
+    private static final MealApis apiService = getRetrofit().create(MealApis.class);
 
     public static void getAllCategories(CategoriesGetResponse categoriesGetResponse) {
         apiService.getAllCategories().enqueue(new Callback<CategoriesResponse>() {
@@ -39,22 +40,22 @@ public class GetApiService {
         });
     }
 
-    public static void getAllFilteredMeals(SendSelectedItem selectedItem, OnMealsLoadedListener onMealsLoadedListener) {
+    public static void getAllFilteredMeals(SendSelectedItem selectedItem, RandomMealsListCallback randomMealsListCallback) {
         String selectedItemUrl = getSelectedItemUrl(selectedItem);
         apiService.getFilteredMeals(selectedItemUrl).enqueue(new Callback<MealResponse>() {
             @Override
             public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
                 Log.d("API-DEBUG", "URL: " + call.request().url().toString());
                 if (response.body() != null && response.body().getMeals() != null) {
-                    onMealsLoadedListener.onSuccess(response.body().getMeals());
+                    randomMealsListCallback.onSuccess(response.body().getMeals());
                 } else {
-                    onMealsLoadedListener.onFailure("Server Error: " + response.code());
+                    randomMealsListCallback.onFailure("Server Error: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                onMealsLoadedListener.onFailure(t.getMessage());
+                randomMealsListCallback.onFailure(t.getMessage());
                 Log.d("API-SERVICES", " can not get any Filtered Item");
             }
         });

@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.homeScreen;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,16 +21,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.foodplanner.Entity.Meal;
-import com.example.foodplanner.adapter.HomeCarouselAdapter;
-import com.example.foodplanner.adapter.RefreshManager;
-import com.example.foodplanner.service.CountryCodeService;
-import com.example.foodplanner.service.GetMealRandom;
-import com.example.foodplanner.service.GetRandomMealList;
-import com.example.foodplanner.service.MealCallback;
-import com.example.foodplanner.service.OnMealsLoadedListener;
-import com.example.foodplanner.wrapper.MealResponse;
-import com.example.foodplanner.wrapper.SelectedMeal;
+import com.example.foodplanner.R;
+import com.example.foodplanner.datasource.remote.MealRemoteDataSource;
+import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
+import com.example.foodplanner.datasource.remote.RandomMealCallback;
+import com.example.foodplanner.datasource.remote.RandomMealsListCallback;
+import com.example.foodplanner.model.wrapper.SelectedMeal;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.CarouselSnapHelper;
@@ -38,10 +35,6 @@ import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -57,6 +50,9 @@ public class HomeFragment extends Fragment {
     private SwipeRefreshLayout swipeLayout;
     private RecyclerView recyclerView;
     private Button cookNow;
+
+    /// datasource
+    private MealRemoteDataSource remoteDataSource;
 
     public HomeFragment() { }
 
@@ -80,6 +76,11 @@ public class HomeFragment extends Fragment {
         shimmerCarousel = view.findViewById(R.id.homeProductShimmerLayout);
         recyclerView = view.findViewById(R.id.homeProductsRecyclerView);
         cookNow=view.findViewById(R.id.homeCookNow);
+
+        remoteDataSource=new MealRemoteDataSource();
+
+
+
 
         RefreshManager.setup(swipeLayout, this::loadAllData);
 
@@ -111,7 +112,7 @@ public class HomeFragment extends Fragment {
     private void fetchRandomMeal() {
 
 
-        GetMealRandom.getMeal(new MealCallback() {
+        remoteDataSource.getRandomMeal(new RandomMealCallback() {
             @Override
             public void onSuccess(Meal meal) {
 //                Log.d("MEAL", meal.toString());
@@ -128,10 +129,9 @@ public class HomeFragment extends Fragment {
 
                 homeRecipeTitle.setText(meal.getName());
 
-                String code = CountryCodeService.getCountryCode(meal.getArea());
-                if (code != null) {
+                String flagUrl = CountryCodeLocalDataSource.getImageUrl(meal.getArea());
+                if (flagUrl != null) {
                     homeMealCardArea.setVisibility(View.VISIBLE);
-                    String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";
                     Glide.with(requireContext()).load(flagUrl).circleCrop().into(homeMealCardArea);
                 } else {
                     homeMealCardArea.setVisibility(View.GONE);
@@ -168,7 +168,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchCarouselMeals() {
-        GetRandomMealList.getMealsList(new OnMealsLoadedListener() {
+        remoteDataSource.getRandomMealsList(new RandomMealsListCallback() {
             @Override
             public void onSuccess(List<Meal> meals) {
                 if (getContext() == null) return;
@@ -216,7 +216,7 @@ public class HomeFragment extends Fragment {
         AlertDialog dialog = builder.create();
 
         if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // عشان حواف الـ XML الدائرية تبان
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
         dialog.show();

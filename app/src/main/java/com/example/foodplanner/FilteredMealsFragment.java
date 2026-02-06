@@ -13,11 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.foodplanner.Entity.Meal;
+import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.adapter.FilteredMealsAdapter;
 import com.example.foodplanner.service.GetApiService;
-import com.example.foodplanner.service.OnMealsLoadedListener;
-import com.example.foodplanner.wrapper.SendSelectedItem;
+import com.example.foodplanner.datasource.remote.RandomMealsListCallback;
+import com.example.foodplanner.model.wrapper.SendSelectedItem;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class FilteredMealsFragment extends Fragment {
 
 
 
-        GetApiService.getAllFilteredMeals(selectedItem, new OnMealsLoadedListener() {
+        GetApiService.getAllFilteredMeals(selectedItem, new RandomMealsListCallback() {
             @Override
             public void onSuccess(List<Meal> meals) {
                 FilteredMealsAdapter adapter=new FilteredMealsAdapter(view.getContext(),meals);

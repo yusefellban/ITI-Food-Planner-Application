@@ -1,13 +1,13 @@
-package com.example.foodplanner.service;
+package com.example.foodplanner.datasource.local;
 
-import com.example.foodplanner.Entity.Country;
+import com.example.foodplanner.model.Country;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CountryCodeService {
+public class CountryCodeLocalDataSource {
 
     private static final Map<String, String> areaToCodeMap = new HashMap<>();
 
