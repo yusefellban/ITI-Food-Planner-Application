@@ -1,4 +1,4 @@
-package com.example.foodplanner.mealDetailsScreen;
+package com.example.foodplanner.view.mealDetailsScreen;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -52,7 +52,7 @@ public class DetailsScreenInstructionAdapter extends RecyclerView.Adapter<Detail
                 .scaleY(1f)
                 .translationY(0f)
                 .setDuration(400)
-                .setStartDelay(position * 50L) // حركة تتابعية (Cascade)
+                .setStartDelay(position * 50L)
                 .start();
 
     }

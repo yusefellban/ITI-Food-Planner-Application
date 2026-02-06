@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.view.filteredMealsScreen;
 
 import android.os.Bundle;
 
@@ -13,10 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.foodplanner.R;
+import com.example.foodplanner.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.model.Meal;
-import com.example.foodplanner.adapter.FilteredMealsAdapter;
-import com.example.foodplanner.service.GetApiService;
-import com.example.foodplanner.datasource.remote.RandomMealsListCallback;
+import com.example.foodplanner.datasource.remote.MealsListCallback;
 import com.example.foodplanner.model.wrapper.SendSelectedItem;
 
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.List;
 
 public class FilteredMealsFragment extends Fragment {
  private RecyclerView filteredMealsRecyclerView;
+ private MealRemoteDataSource mealRemoteDataSource;
 
     public FilteredMealsFragment() {
         // Required empty public constructor
@@ -42,12 +43,14 @@ public class FilteredMealsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         filteredMealsRecyclerView=view.findViewById(R.id.filteredMealsRecyclerView);
         filteredMealsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mealRemoteDataSource=new MealRemoteDataSource();
         //get selected item
         SendSelectedItem selectedItem = FilteredMealsFragmentArgs.fromBundle(getArguments()).getSendSelectedItem();
 
 
 
-        GetApiService.getAllFilteredMeals(selectedItem, new RandomMealsListCallback() {
+        mealRemoteDataSource.getAllFilteredMeals(selectedItem, new MealsListCallback() {
             @Override
             public void onSuccess(List<Meal> meals) {
                 FilteredMealsAdapter adapter=new FilteredMealsAdapter(view.getContext(),meals);

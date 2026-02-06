@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.foodplanner.model.CategoriesResponse;
 import com.example.foodplanner.model.IngredientResponse;
 import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.model.wrapper.SendSelectedItem;
 import com.example.foodplanner.network.MealApis;
 import com.example.foodplanner.network.Network;
 import com.example.foodplanner.model.wrapper.MealResponse;
@@ -44,7 +45,7 @@ public class MealRemoteDataSource {
         });
     }
 
-    public void getRandomMealsList(RandomMealsListCallback listener) {
+    public void getRandomMealsList(MealsListCallback listener) {
         List<Meal> mealslist = new ArrayList<>();
 
         final int totalRequests = 8;
@@ -114,5 +115,39 @@ public class MealRemoteDataSource {
         });
     }
 
+    /// Filtered screen
+    public  void getAllFilteredMeals(SendSelectedItem selectedItem, MealsListCallback mealsListCallback) {
+        String selectedItemUrl = getSelectedItemUrl(selectedItem);
+        mealApis.getFilteredMeals(selectedItemUrl).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                Log.d("API-DEBUG", "URL: " + call.request().url().toString());
+                if (response.body() != null && response.body().getMeals() != null) {
+                    mealsListCallback.onSuccess(response.body().getMeals());
+                } else {
+                    mealsListCallback.onFailure("Server Error: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                mealsListCallback.onFailure(t.getMessage());
+                Log.d("API-SERVICES", " can not get any Filtered Item");
+            }
+        });
+
+    }
+    private String getSelectedItemUrl(SendSelectedItem selectedItem) {
+        String res = null;
+        if (selectedItem.getType() == 1) {//category
+            res = "filter.php?c=" + selectedItem.getName().toLowerCase().replace(" ", "_");
+        } else if(selectedItem.getType() == 2) {//Ingreadient
+            res = "filter.php?i=" + selectedItem.getName().toLowerCase().replace(" ", "_");
+        } else if(selectedItem.getType() == 3) {//country
+            res = "filter.php?a=" + selectedItem.getName().toLowerCase().replace(" ", "_");
+
+        }
+        return res;
+    }
 
 }

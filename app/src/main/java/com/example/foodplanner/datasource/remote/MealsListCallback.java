@@ -4,7 +4,7 @@ import com.example.foodplanner.model.Meal;
 
 import java.util.List;
 
-public interface RandomMealsListCallback {
+public interface MealsListCallback {
     void onSuccess(List<Meal> meals);
     void onFailure(String error);
 }

@@ -1,4 +1,4 @@
-package com.example.foodplanner.homeScreen;
+package com.example.foodplanner.view.homeScreen;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,7 +26,7 @@ import com.example.foodplanner.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.model.Meal;
 import com.example.foodplanner.datasource.local.CountryCodeLocalDataSource;
 import com.example.foodplanner.datasource.remote.MealCallback;
-import com.example.foodplanner.datasource.remote.RandomMealsListCallback;
+import com.example.foodplanner.datasource.remote.MealsListCallback;
 import com.example.foodplanner.model.wrapper.SelectedMeal;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.carousel.CarouselLayoutManager;
@@ -168,7 +168,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchCarouselMeals() {
-        remoteDataSource.getRandomMealsList(new RandomMealsListCallback() {
+        remoteDataSource.getRandomMealsList(new MealsListCallback() {
             @Override
             public void onSuccess(List<Meal> meals) {
                 if (getContext() == null) return;

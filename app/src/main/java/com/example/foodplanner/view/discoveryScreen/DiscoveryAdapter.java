@@ -1,4 +1,4 @@
-package com.example.foodplanner.discoveryScreen;
+package com.example.foodplanner.view.discoveryScreen;
 
 import android.util.Log;
 import android.view.LayoutInflater;

@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.foodplanner.homeScreen.HomeFragment"
+        android:name="com.example.foodplanner.view.homeScreen.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
-        android:name="com.example.foodplanner.mealDetailsScreen.MealDetailsFragment"
+        android:name="com.example.foodplanner.view.mealDetailsScreen.MealDetailsFragment"
         android:label="fragment_meal_details"
         tools:layout="@layout/fragment_meal_details" >
         <argument
@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/discoveryFragment"
-        android:name="com.example.foodplanner.discoveryScreen.DiscoveryFragment"
+        android:name="com.example.foodplanner.view.discoveryScreen.DiscoveryFragment"
         android:label="fragment_discovery"
         tools:layout="@layout/fragment_discovery" >
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/filteredMealsFragment"
-        android:name="com.example.foodplanner.FilteredMealsFragment"
+        android:name="com.example.foodplanner.view.filteredMealsScreen.FilteredMealsFragment"
         android:label="fragment_filtered_meals"
         tools:layout="@layout/fragment_filtered_meals" >
         <argument android:name="SendSelectedItem"
