@@ -7,7 +7,7 @@
     android:background="@color/background"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    tools:context=".RegistrationFragment">
+    tools:context=".Presentation.RegistrationFragment">
 
 
     <ImageView

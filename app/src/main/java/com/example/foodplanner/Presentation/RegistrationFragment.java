@@ -1,0 +1,51 @@
+package com.example.foodplanner.Presentation;
+
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.foodplanner.R;
+
+
+public class RegistrationFragment extends Fragment {
+  private TextView registrationToLogin;
+
+  private Button registrationButton;
+    public RegistrationFragment() {
+        // Required empty public constructor
+    }
+
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_registration, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        registrationToLogin=view.findViewById(R.id.registrationToLogin);
+        registrationButton=view.findViewById(R.id.registrationButton);
+
+        registrationToLogin.setOnClickListener((v)->{
+            NavHostFragment.findNavController(RegistrationFragment.this)
+                    .navigate(R.id.action_registrationFragment_to_loginFragment);
+        });
+        registrationButton.setOnClickListener((v)->{
+            NavHostFragment.findNavController(RegistrationFragment.this)
+                    .navigate(R.id.action_registrationFragment_to_homeFragment);
+        });
+    }
+}
