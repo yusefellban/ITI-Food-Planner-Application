@@ -51,14 +51,14 @@ public class CountryCodeLocalDataSource {
         areaToCodeMap.put("Vietnamese", "VN");
     }
 
-    public static String getCountryCode(String areaName) {
+    public  String getCountryCode(String areaName) {
         if (areaName == null) return null;
         return areaToCodeMap.get(areaName);
     }
-    public static List<String> getAllAreas() {
+    public List<String> getAllAreas() {
         return new ArrayList<>(areaToCodeMap.keySet());
     }
-    public static String getImageUrl(String areaName) {
+    public String getImageUrl(String areaName) {
         if (areaName == null) return null;
 
         String code = getCountryCode(areaName);
@@ -67,7 +67,7 @@ public class CountryCodeLocalDataSource {
         return "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";
     }
 
-    public static List<Country> getAllCountries() {
+    public List<Country> getAllCountries() {
         List<Country> countries = new ArrayList<>();
 
         for (String areaName : areaToCodeMap.keySet()) {

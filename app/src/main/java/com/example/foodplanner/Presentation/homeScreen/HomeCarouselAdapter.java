@@ -23,10 +23,18 @@ public class HomeCarouselAdapter extends RecyclerView.Adapter<HomeCarouselAdapte
 
     private List<Meal> mealList;
     private Context context;
+    private CountryCodeLocalDataSource countryCodeLocalDataSource;
+    private onItemClickListener onItemClick;
 
-    public HomeCarouselAdapter(Context context, List<Meal> mealList) {
+    public HomeCarouselAdapter(Context context, onItemClickListener onItemClick) {
         this.context = context;
+        countryCodeLocalDataSource = new CountryCodeLocalDataSource();
+        this.onItemClick = onItemClick;
+    }
+
+    public void setMealList(List<Meal> mealList) {
         this.mealList = mealList;
+
     }
 
     @NonNull
@@ -44,7 +52,7 @@ public class HomeCarouselAdapter extends RecyclerView.Adapter<HomeCarouselAdapte
 
         Glide.with(context).load(meal.getThumbnailUrl()).into(holder.bgImage);
 
-        String code = CountryCodeLocalDataSource.getCountryCode(meal.getArea());
+        String code = countryCodeLocalDataSource.getCountryCode(meal.getArea());
 
         if (code != null) {
             String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";
@@ -60,12 +68,9 @@ public class HomeCarouselAdapter extends RecyclerView.Adapter<HomeCarouselAdapte
                     meal.getThumbnailUrl()
             );
 
-            HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
-                    HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(selectedMeal);
+            onItemClick.showSelectedMeal(selectedMeal);
 
-            Navigation.findNavController(v).navigate(action);
         });
-
 
 
     }

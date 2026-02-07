@@ -22,7 +22,7 @@ public class Country implements ChipSelectedType {
     public String getImageUrl() {
         if (this.name == null) return null;
 
-        String code = CountryCodeLocalDataSource.getCountryCode(this.name);
+        String code = new CountryCodeLocalDataSource().getCountryCode(this.name);
         if (code == null) return null;
 
         return "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";

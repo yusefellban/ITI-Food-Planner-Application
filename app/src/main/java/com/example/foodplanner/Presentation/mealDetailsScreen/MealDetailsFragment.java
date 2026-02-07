@@ -47,6 +47,7 @@ public class MealDetailsFragment extends Fragment {
 
     private SelectedMeal selectedMeal;
     private MealDetailsRemoteDataSource selectedMealDataSource;
+    private CountryCodeLocalDataSource countryCodeLocalDataSource;
 
 
     public MealDetailsFragment() {
@@ -74,6 +75,7 @@ public class MealDetailsFragment extends Fragment {
         detailsIngredientsItems = view.findViewById(R.id.detailsIngredientsItems);
 
         selectedMealDataSource= new MealDetailsRemoteDataSource();
+        countryCodeLocalDataSource=new CountryCodeLocalDataSource();
 
         selectedMeal = MealDetailsFragmentArgs.fromBundle(getArguments()).getSelectedMeal();
 
@@ -101,7 +103,7 @@ public class MealDetailsFragment extends Fragment {
         selectedMealDataSource.getMealDetails(selectedMeal.getId(), new MealCallback() {
             @Override
             public void onSuccess(Meal myMeal) {
-                String code = CountryCodeLocalDataSource.getCountryCode(myMeal.getArea());
+                String code = countryCodeLocalDataSource.getCountryCode(myMeal.getArea());
                 if (code != null) {
                     detailsAreaIcon.setVisibility(View.VISIBLE);
                     String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";

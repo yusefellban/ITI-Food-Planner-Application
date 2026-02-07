@@ -46,6 +46,7 @@ public class DiscoveryFragment extends Fragment {
     private Chip chipCountry;
 
     private MealRemoteDataSource remoteDataSource;
+    private CountryCodeLocalDataSource countryCodeLocalDataSource;
 
 
 
@@ -75,6 +76,7 @@ public class DiscoveryFragment extends Fragment {
         chipCountry = view.findViewById(R.id.chipCountry);
 
         remoteDataSource=new MealRemoteDataSource();
+        countryCodeLocalDataSource=new CountryCodeLocalDataSource();
 
 
         discoveryAdapter = new DiscoveryAdapter();
@@ -149,7 +151,7 @@ public class DiscoveryFragment extends Fragment {
     }
 
     public void setCountryLit() {
-        List<Country> areas = CountryCodeLocalDataSource.getAllCountries();
+        List<Country> areas = countryCodeLocalDataSource.getAllCountries();
         if (areas != null) {
             countryList = (List<ChipSelectedType>) (List<?>) areas;
             discoveryAdapter.setList(countryList);

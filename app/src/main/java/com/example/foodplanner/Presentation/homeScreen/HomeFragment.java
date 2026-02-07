@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -21,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.Presentation.LoginFragment;
+import com.example.foodplanner.Presentation.homeScreen.presenter.HomePresenterImp;
+import com.example.foodplanner.Presentation.homeScreen.view.HomeViewer;
 import com.example.foodplanner.R;
 import com.example.foodplanner.Data.meals.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.Data.meals.model.Meal;
@@ -36,7 +40,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements onItemClickListener, HomeViewer {
 
     private ImageView homeRecipeImage;
     private ImageView homeMealCardArea;
@@ -51,10 +55,13 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private Button cookNow;
 
-    /// datasource
-    private MealRemoteDataSource remoteDataSource;
+    private HomeCarouselAdapter adapter;
+    /// presenter
+    HomePresenterImp presenter;
 
-    public HomeFragment() { }
+
+    public HomeFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,20 +82,19 @@ public class HomeFragment extends Fragment {
         swipeLayout = view.findViewById(R.id.swipeRefreshLayout);
         shimmerCarousel = view.findViewById(R.id.homeProductShimmerLayout);
         recyclerView = view.findViewById(R.id.homeProductsRecyclerView);
-        cookNow=view.findViewById(R.id.homeCookNow);
+        cookNow = view.findViewById(R.id.homeCookNow);
 
-        remoteDataSource=new MealRemoteDataSource();
+        presenter = new HomePresenterImp( this);
+
+        adapter = new HomeCarouselAdapter(getContext(), this);
 
 
-
-
-        RefreshManager.setup(swipeLayout, this::loadAllData);
-
+        presenter.setRefreshManager();
 
         loadAllData();
 
-        view.findViewById(R.id.ffa).setOnClickListener((e)->{
-            showCustomDialog();
+        view.findViewById(R.id.ffa).setOnClickListener((e) -> {
+            presenter.showGoToRegistrationDialog();
         });
 
     }
@@ -96,30 +102,18 @@ public class HomeFragment extends Fragment {
 
     private void loadAllData() {
 
-        shimmerFrameLayout.setVisibility(View.VISIBLE);
-        shimmerFrameLayout.startShimmer();
-        mealCard.setVisibility(View.GONE);
+        presenter.startMealShimmer();
+        presenter.startMealListShimmer();
 
-        shimmerCarousel.setVisibility(View.VISIBLE);
-        shimmerCarousel.startShimmer();
-        recyclerView.setVisibility(View.GONE);
-
-        // نداء الـ APIs
         fetchRandomMeal();
         fetchCarouselMeals();
     }
 
     private void fetchRandomMeal() {
-
-
-        remoteDataSource.getRandomMeal(new MealCallback() {
+        presenter.fetchRandomMeal(new MealCallback() {
             @Override
             public void onSuccess(Meal meal) {
-//                Log.d("MEAL", meal.toString());
-                shimmerFrameLayout.stopShimmer();
-                shimmerFrameLayout.setVisibility(View.GONE);
-                mealCard.setVisibility(View.VISIBLE);
-
+                presenter.stopMealShimmer();
 
                 Glide.with(requireContext())
                         .load(meal.getThumbnailUrl())
@@ -128,56 +122,33 @@ public class HomeFragment extends Fragment {
                         .into(homeRecipeImage);
 
                 homeRecipeTitle.setText(meal.getName());
+                String flagUrl = presenter.getCountryFlagUrl(meal.getArea());
+                Glide.with(requireContext()).load(flagUrl).circleCrop().into(homeMealCardArea);
 
-                String flagUrl = CountryCodeLocalDataSource.getImageUrl(meal.getArea());
-                if (flagUrl != null) {
-                    homeMealCardArea.setVisibility(View.VISIBLE);
-                    Glide.with(requireContext()).load(flagUrl).circleCrop().into(homeMealCardArea);
-                } else {
-                    homeMealCardArea.setVisibility(View.GONE);
-                }
-
-                if (meal.getTags() != null) {
-                    List<String> list = meal.getTagsAsList();
-                    if(list.isEmpty()) homeTag1.setText(meal.getTags());
-                    else if(list.size() >= 2) {
-                        homeTag1.setText(list.get(0));
-                        homeTag2.setText(list.get(1));
-                    } else homeTag1.setText(list.get(0));
-                }
-
-                cookNow.setOnClickListener((v)->{
-
-                    SelectedMeal selectedMeal=new SelectedMeal(Integer.parseInt(meal.getId()),meal.getName(),meal.getThumbnailUrl());
-
-                    HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action=
-                            HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(selectedMeal);
-                    Navigation.findNavController(v).navigate(action);
+                cookNow.setOnClickListener((v) -> {
+                    SelectedMeal selectedMeal = new SelectedMeal(Integer.parseInt(meal.getId()), meal.getName(), meal.getThumbnailUrl());
+                    presenter.showSelectedMeal(selectedMeal);
 
                 });
-                checkIfAllLoadingFinished();
+                presenter.checkIfAllLoadingFinished();
+
             }
 
             @Override
             public void onError(String error) {
                 Log.e("ERROR", error);
-                checkIfAllLoadingFinished();
+                presenter.checkIfAllLoadingFinished();
             }
         });
-
     }
 
     private void fetchCarouselMeals() {
-        remoteDataSource.getRandomMealsList(new MealsListCallback() {
+        presenter.fetchCarouselMeals(new MealsListCallback() {
             @Override
             public void onSuccess(List<Meal> meals) {
                 if (getContext() == null) return;
 
-                shimmerCarousel.stopShimmer();
-                shimmerCarousel.setVisibility(View.GONE);
-
-                recyclerView.setVisibility(View.VISIBLE);
-
+                presenter.stopMealListShimmer();
 
                 if (recyclerView.getLayoutManager() == null) {
                     CarouselLayoutManager layoutManager = new CarouselLayoutManager(new MultiBrowseCarouselStrategy());
@@ -189,27 +160,63 @@ public class HomeFragment extends Fragment {
                     recyclerView.setNestedScrollingEnabled(false);
                 }
 
-                HomeCarouselAdapter adapter = new HomeCarouselAdapter(getContext(), meals);
                 recyclerView.setAdapter(adapter);
+                //set List
+                presenter.setMealListAdapter(meals);
 
-                checkIfAllLoadingFinished();
+                presenter.checkIfAllLoadingFinished();
             }
 
             @Override
             public void onFailure(String error) {
                 Log.e("Error", error);
-                checkIfAllLoadingFinished();
+                presenter.checkIfAllLoadingFinished();
             }
         });
     }
 
-    private void checkIfAllLoadingFinished() {
+    @Override
+    public void startMealShimmer() {
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmer();
+        mealCard.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void stopMealShimmer() {
+        shimmerFrameLayout.stopShimmer();
+        shimmerFrameLayout.setVisibility(View.GONE);
+        mealCard.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void startMealListShimmer() {
+        shimmerCarousel.setVisibility(View.VISIBLE);
+        shimmerCarousel.startShimmer();
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void stopMealListShimmer() {
+        shimmerCarousel.stopShimmer();
+        shimmerCarousel.setVisibility(View.GONE);
+
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setMealListAdapter(List<Meal> meals) {
+        adapter.setMealList(meals);
+    }
+    @Override
+    public void checkIfAllLoadingFinished() {
         RefreshManager.stopRefreshing(swipeLayout);
     }
 
-
-    public void showCustomDialog() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this.getContext(), R.style.CustomDialogTheme);
+    @Override
+    public void showGoToRegistrationDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.CustomDialogTheme);
         View view = getLayoutInflater().inflate(R.layout.goto_login_dialog_layout, null);
         builder.setView(view);
 
@@ -223,6 +230,27 @@ public class HomeFragment extends Fragment {
 
         view.findViewById(R.id.btn_confirm).setOnClickListener(v -> {
             dialog.dismiss();
+           presenter.goToRegistration();
         });
+    }
+
+
+
+    @Override
+    public void setRefreshManager() {
+        RefreshManager.setup(swipeLayout, this::loadAllData);
+
+    }
+
+    @Override
+    public void showSelectedMeal(SelectedMeal selectedMeal) {
+        HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
+                HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(selectedMeal);
+        Navigation.findNavController(getView()).navigate(action);
+    }
+    @Override
+    public void goToRegistration(){
+        NavHostFragment.findNavController(HomeFragment.this)
+                .navigate(R.id.action_homeFragment_to_registrationFragment);
     }
 }
