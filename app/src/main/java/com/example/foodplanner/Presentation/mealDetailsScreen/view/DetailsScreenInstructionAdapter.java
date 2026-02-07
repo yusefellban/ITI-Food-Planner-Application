@@ -1,4 +1,4 @@
-package com.example.foodplanner.Presentation.mealDetailsScreen;
+package com.example.foodplanner.Presentation.mealDetailsScreen.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;

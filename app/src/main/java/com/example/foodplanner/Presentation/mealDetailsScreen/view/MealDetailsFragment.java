@@ -1,4 +1,4 @@
-package com.example.foodplanner.Presentation.mealDetailsScreen;
+package com.example.foodplanner.Presentation.mealDetailsScreen.view;
 
 import android.os.Bundle;
 
@@ -15,11 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.Presentation.mealDetailsScreen.presenter.MealDetailsPresenterImp;
 import com.example.foodplanner.R;
 import com.example.foodplanner.Data.meals.datasource.remote.MealCallback;
-import com.example.foodplanner.Data.meals.datasource.remote.MealDetailsRemoteDataSource;
 import com.example.foodplanner.Data.meals.model.Meal;
-import com.example.foodplanner.Data.meals.datasource.local.CountryCodeLocalDataSource;
 import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -32,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class MealDetailsFragment extends Fragment {
+public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
 
     private ImageView detailsMealImage;
     private ImageView detailsAreaIcon;
@@ -46,8 +45,8 @@ public class MealDetailsFragment extends Fragment {
     private YouTubePlayerView youtubePlayerView;
 
     private SelectedMeal selectedMeal;
-    private MealDetailsRemoteDataSource selectedMealDataSource;
-    private CountryCodeLocalDataSource countryCodeLocalDataSource;
+
+    private MealDetailsPresenterImp presenter;
 
 
     public MealDetailsFragment() {
@@ -58,7 +57,7 @@ public class MealDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_meal_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_meal_details, container, false);
         return view;
     }
 
@@ -74,11 +73,9 @@ public class MealDetailsFragment extends Fragment {
         detailsInstructionRecyclerView = view.findViewById(R.id.detailsInstructionRecyclerView);
         detailsIngredientsItems = view.findViewById(R.id.detailsIngredientsItems);
 
-        selectedMealDataSource= new MealDetailsRemoteDataSource();
-        countryCodeLocalDataSource=new CountryCodeLocalDataSource();
 
         selectedMeal = MealDetailsFragmentArgs.fromBundle(getArguments()).getSelectedMeal();
-
+        presenter=new MealDetailsPresenterImp(this);
 
         detailsMealName.setText(selectedMeal.getName());
 
@@ -100,17 +97,12 @@ public class MealDetailsFragment extends Fragment {
     }
 
     private void fetchSelectedMeal() {
-        selectedMealDataSource.getMealDetails(selectedMeal.getId(), new MealCallback() {
+        presenter.getMealDetails(selectedMeal.getId(), new MealCallback() {
             @Override
             public void onSuccess(Meal myMeal) {
-                String code = countryCodeLocalDataSource.getCountryCode(myMeal.getArea());
-                if (code != null) {
-                    detailsAreaIcon.setVisibility(View.VISIBLE);
-                    String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";
-                    Glide.with(requireContext()).load(flagUrl).circleCrop().into(detailsAreaIcon);
-                } else {
-                    detailsAreaIcon.setVisibility(View.GONE);
-                }
+
+                String flagUrl = presenter.getMealImageUrl(myMeal.getArea());
+                Glide.with(requireContext()).load(flagUrl).circleCrop().into(detailsAreaIcon);
 
                 detailsAreaName.setText(myMeal.getArea());
                 detailsCategory.setText(myMeal.getCategory());
@@ -127,12 +119,12 @@ public class MealDetailsFragment extends Fragment {
 
 
                 /// load youtube video
-                setupYoutubePlayer(myMeal.getYoutubeUrl());
+                presenter.setupYoutubePlayer(myMeal.getYoutubeUrl());
             }
 
             @Override
             public void onError(String error) {
-                Log.d( "onError-Selected Meal: ",error);
+                Log.d("onError-Selected Meal: ", error);
             }
         });
     }
@@ -144,42 +136,13 @@ public class MealDetailsFragment extends Fragment {
                 .collect(Collectors.toList());
     }
 
-    private String getYoutubeVideoId(String youtubeUrl) {
-        if (youtubeUrl == null || youtubeUrl.isEmpty()) return null;
-
-        String videoId = null;
-        if (youtubeUrl.contains("v=")) {
-            String[] parts = youtubeUrl.split("v=");
-            videoId = parts[1];
-
-            int ampersandPosition = videoId.indexOf("&");
-            if (ampersandPosition != -1) {
-                videoId = videoId.substring(0, ampersandPosition);
-            }
-        }
-
-        //  youtu.be
-        else if (youtubeUrl.contains("youtu.be/")) {
-            String[] parts = youtubeUrl.split("youtu.be/");
-            videoId = parts[1];
-            int questionMarkPosition = videoId.indexOf("?");
-            if (questionMarkPosition != -1) {
-                videoId = videoId.substring(0, questionMarkPosition);
-            }
-        }
-
-        return videoId;
-    }
 
 
-
-    private void setupYoutubePlayer(String videoUrl) {
-        if (videoUrl == null || videoUrl.isEmpty()) return;
-
+    @Override
+    public void setupYoutubePlayer(String videoId) {
         youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = getYoutubeVideoId(videoUrl);
                 if (videoId != null) {
                     youTubePlayer.cueVideo(videoId, 0);
                 }

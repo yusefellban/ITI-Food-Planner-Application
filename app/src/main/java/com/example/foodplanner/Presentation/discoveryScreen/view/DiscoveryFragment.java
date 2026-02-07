@@ -152,7 +152,7 @@ public class DiscoveryFragment extends Fragment implements onClickDiscovery , Di
         List<Country> areas = presenter.getAllCountries();
         if (areas != null) {
             countryList = (List<ChipSelectedType>) (List<?>) areas;
-            presenter.setList(categoryList);
+            presenter.setList(countryList);
         } else {
             countryList = new ArrayList<>();
         }
