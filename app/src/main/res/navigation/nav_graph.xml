@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.foodplanner.Presentation.homeScreen.HomeFragment"
+        android:name="com.example.foodplanner.Presentation.homeScreen.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/discoveryFragment"
-        android:name="com.example.foodplanner.Presentation.discoveryScreen.DiscoveryFragment"
+        android:name="com.example.foodplanner.Presentation.discoveryScreen.view.DiscoveryFragment"
         android:label="fragment_discovery"
         tools:layout="@layout/fragment_discovery" >
         <action

@@ -1,4 +1,4 @@
-package com.example.foodplanner.Presentation.discoveryScreen;
+package com.example.foodplanner.Presentation.discoveryScreen.view;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,7 +23,11 @@ import java.util.List;
 
 public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<ChipSelectedType> itemList = new ArrayList<>();
+    private onClickDiscovery onClickDiscovery;
 
+    public DiscoveryAdapter(onClickDiscovery onClickDiscovery){
+        this.onClickDiscovery=onClickDiscovery;
+    }
     public void setList(List<ChipSelectedType> newList) {
         this.itemList.clear();
         this.itemList.addAll(newList);
@@ -62,10 +65,8 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 );
                 Log.d("hahah", "ttt" + selectedMeal.toString());
 
-                DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action =
-                        DiscoveryFragmentDirections.actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
 
-                Navigation.findNavController(v).navigate(action);
+                onClickDiscovery.goToFilteredScreen(selectedMeal);
             });
 
         } else if (holder instanceof CountryViewHolder) {
@@ -73,16 +74,14 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.itemView.setOnClickListener((v) -> {
 
                 SendSelectedItem selectedMeal = new SendSelectedItem(
-                        88,
+                        0,
                         ((Country) item).getName(),
                         ((Country) item).getImageUrl(), 3
                 );
                 Log.d("hahah", "ttt" + selectedMeal.toString());
 
-                DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action =
-                        DiscoveryFragmentDirections.actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
+                onClickDiscovery.goToFilteredScreen(selectedMeal);
 
-                Navigation.findNavController(v).navigate(action);
             });
 
         } else if (holder instanceof IngredientViewHolder) {
@@ -96,10 +95,8 @@ public class DiscoveryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 );
                 Log.d("hahah", "ttt" + selectedMeal.toString());
 
-                DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action =
-                        DiscoveryFragmentDirections.actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
+                onClickDiscovery.goToFilteredScreen(selectedMeal);
 
-                Navigation.findNavController(v).navigate(action);
             });
 
         }

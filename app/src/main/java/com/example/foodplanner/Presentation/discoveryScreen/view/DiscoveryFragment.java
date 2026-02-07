@@ -1,10 +1,11 @@
-package com.example.foodplanner.Presentation.discoveryScreen;
+package com.example.foodplanner.Presentation.discoveryScreen.view;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,13 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.foodplanner.Data.meals.model.wrapper.SendSelectedItem;
+import com.example.foodplanner.Presentation.discoveryScreen.presenter.DiscoveryPresenterImp;
 import com.example.foodplanner.R;
-import com.example.foodplanner.Data.meals.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.Data.meals.model.Category;
 import com.example.foodplanner.Data.meals.model.Country;
 import com.example.foodplanner.Data.meals.model.Ingredient;
 import com.example.foodplanner.Data.meals.datasource.remote.CategoriesResponseCallback;
-import com.example.foodplanner.Data.meals.datasource.local.CountryCodeLocalDataSource;
 import com.example.foodplanner.Data.meals.datasource.remote.IngredientResponseCallback;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DiscoveryFragment extends Fragment {
+public class DiscoveryFragment extends Fragment implements onClickDiscovery , DiscoveryViewer {
 
     private ChipGroup chipGroup;
 
@@ -45,9 +46,7 @@ public class DiscoveryFragment extends Fragment {
     private Chip chipCategory;
     private Chip chipCountry;
 
-    private MealRemoteDataSource remoteDataSource;
-    private CountryCodeLocalDataSource countryCodeLocalDataSource;
-
+    DiscoveryPresenterImp presenter;
 
 
     public DiscoveryFragment() {
@@ -75,11 +74,10 @@ public class DiscoveryFragment extends Fragment {
         chipCategory = view.findViewById(R.id.chipCategory);
         chipCountry = view.findViewById(R.id.chipCountry);
 
-        remoteDataSource=new MealRemoteDataSource();
-        countryCodeLocalDataSource=new CountryCodeLocalDataSource();
+        presenter=new DiscoveryPresenterImp(this);
 
 
-        discoveryAdapter = new DiscoveryAdapter();
+        discoveryAdapter = new DiscoveryAdapter(this);
         recyclerView.setAdapter(discoveryAdapter);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -93,20 +91,20 @@ public class DiscoveryFragment extends Fragment {
                 if (ingredientList == null || ingredientList.isEmpty()) {
                     setIngredientsList();
                 } else {
-                    discoveryAdapter.setList(ingredientList);
+                    presenter.setList(ingredientList);
                 }
             } else if (id == R.id.chipCountry) {
                 if (countryList == null || countryList.isEmpty()) {
                     setCountryLit();
                 } else {
-                    discoveryAdapter.setList(countryList);
+                    presenter.setList(countryList);
                 }
 
             } else if(id == R.id.chipCategory){
                 if (categoryList == null || categoryList.isEmpty()) {
                     setCategoriesLit();
                 } else {
-                    discoveryAdapter.setList(categoryList);
+                    presenter.setList(categoryList);
                 }
             }
 
@@ -119,11 +117,11 @@ public class DiscoveryFragment extends Fragment {
 
 
     public void setCategoriesLit() {
-        remoteDataSource.getAllCategories(new CategoriesResponseCallback() {
+        presenter.getAllCategories(new CategoriesResponseCallback() {
             @Override
             public void onSuccess(List<Category> categories) {
                 categoryList = (List<ChipSelectedType>) (List<?>) categories;// Ugly Hack
-                discoveryAdapter.setList(categoryList);
+                presenter.setList(categoryList);
             }
 
             @Override
@@ -135,11 +133,11 @@ public class DiscoveryFragment extends Fragment {
 
     public void setIngredientsList() {
 
-        remoteDataSource.getAllIngredients(new IngredientResponseCallback() {
+        presenter.getAllIngredients(new IngredientResponseCallback() {
             @Override
             public void onSuccess(List<Ingredient> ingredients) {
                 ingredientList = (List<ChipSelectedType>) (List<?>) ingredients;// Ugly Hack
-                discoveryAdapter.setList(ingredientList);
+                presenter.setList(ingredientList);
             }
 
             @Override
@@ -151,10 +149,10 @@ public class DiscoveryFragment extends Fragment {
     }
 
     public void setCountryLit() {
-        List<Country> areas = countryCodeLocalDataSource.getAllCountries();
+        List<Country> areas = presenter.getAllCountries();
         if (areas != null) {
             countryList = (List<ChipSelectedType>) (List<?>) areas;
-            discoveryAdapter.setList(countryList);
+            presenter.setList(categoryList);
         } else {
             countryList = new ArrayList<>();
         }
@@ -166,5 +164,17 @@ public class DiscoveryFragment extends Fragment {
         chipCountry.setChecked(false);
         chipIngredient.setChecked(false);
         chipCategory.setChecked(true);
+    }
+
+    @Override
+    public void goToFilteredScreen(SendSelectedItem selectedMeal) {
+                DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action =
+                        DiscoveryFragmentDirections.actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
+                Navigation.findNavController(getView()).navigate(action);
+    }
+
+    @Override
+    public void setList(List<ChipSelectedType> list) {
+        discoveryAdapter.setList(list);
     }
 }

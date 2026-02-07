@@ -1,4 +1,4 @@
-package com.example.foodplanner.Presentation.homeScreen;
+package com.example.foodplanner.Presentation.homeScreen.view;
 
 import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
 

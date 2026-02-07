@@ -1,4 +1,4 @@
-package com.example.foodplanner.Presentation.homeScreen;
+package com.example.foodplanner.Presentation.homeScreen.view;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.graphics.Color;

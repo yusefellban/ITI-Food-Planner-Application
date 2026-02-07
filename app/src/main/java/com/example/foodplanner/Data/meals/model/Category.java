@@ -1,6 +1,6 @@
 package com.example.foodplanner.Data.meals.model;
 
-import com.example.foodplanner.Presentation.discoveryScreen.ChipSelectedType;
+import com.example.foodplanner.Presentation.discoveryScreen.view.ChipSelectedType;
 import com.google.gson.annotations.SerializedName;
 
 public class Category implements ChipSelectedType {

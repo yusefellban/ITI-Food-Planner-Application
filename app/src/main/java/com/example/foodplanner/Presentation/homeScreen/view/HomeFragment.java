@@ -1,4 +1,4 @@
-package com.example.foodplanner.Presentation.homeScreen;
+package com.example.foodplanner.Presentation.homeScreen.view;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,13 +22,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.foodplanner.Presentation.LoginFragment;
 import com.example.foodplanner.Presentation.homeScreen.presenter.HomePresenterImp;
-import com.example.foodplanner.Presentation.homeScreen.view.HomeViewer;
 import com.example.foodplanner.R;
-import com.example.foodplanner.Data.meals.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.Data.meals.model.Meal;
-import com.example.foodplanner.Data.meals.datasource.local.CountryCodeLocalDataSource;
 import com.example.foodplanner.Data.meals.datasource.remote.MealCallback;
 import com.example.foodplanner.Data.meals.datasource.remote.MealsListCallback;
 import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
