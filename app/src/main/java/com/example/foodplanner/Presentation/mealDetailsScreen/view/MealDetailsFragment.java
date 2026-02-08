@@ -101,7 +101,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
             @Override
             public void onSuccess(Meal myMeal) {
 
-                String flagUrl = presenter.getMealImageUrl(myMeal.getArea());
+                 String flagUrl=presenter.getCountryFlagUrl(myMeal.getArea());
                 Glide.with(requireContext()).load(flagUrl).circleCrop().into(detailsAreaIcon);
 
                 detailsAreaName.setText(myMeal.getArea());

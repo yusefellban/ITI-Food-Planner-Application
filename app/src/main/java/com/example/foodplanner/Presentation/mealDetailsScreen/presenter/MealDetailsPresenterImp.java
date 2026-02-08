@@ -21,7 +21,7 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter {
     }
 
     @Override
-    public String getMealImageUrl(String area) {
+    public String getCountryFlagUrl(String area) {
         return repository.getImageUrl(area);
     }
 
