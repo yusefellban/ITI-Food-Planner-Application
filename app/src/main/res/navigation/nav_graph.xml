@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.foodplanner.SplashFragment"
+        android:name="com.example.foodplanner.Presentation.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.foodplanner.LoginFragment"
+        android:name="com.example.foodplanner.Presentation.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.foodplanner.RegistrationFragment"
+        android:name="com.example.foodplanner.Presentation.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" >
         <action
@@ -42,25 +42,28 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.foodplanner.view.homeScreen.HomeFragment"
+        android:name="com.example.foodplanner.Presentation.homeScreen.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
-        android:name="com.example.foodplanner.view.mealDetailsScreen.MealDetailsFragment"
+        android:name="com.example.foodplanner.Presentation.mealDetailsScreen.view.MealDetailsFragment"
         android:label="fragment_meal_details"
         tools:layout="@layout/fragment_meal_details" >
         <argument
             android:name="SelectedMeal"
-            app:argType="com.example.foodplanner.model.wrapper.SelectedMeal" />
+            app:argType="com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal" />
     </fragment>
     <fragment
         android:id="@+id/discoveryFragment"
-        android:name="com.example.foodplanner.view.discoveryScreen.DiscoveryFragment"
+        android:name="com.example.foodplanner.Presentation.discoveryScreen.view.DiscoveryFragment"
         android:label="fragment_discovery"
         tools:layout="@layout/fragment_discovery" >
         <action
@@ -69,11 +72,11 @@
     </fragment>
     <fragment
         android:id="@+id/filteredMealsFragment"
-        android:name="com.example.foodplanner.view.filteredMealsScreen.FilteredMealsFragment"
+        android:name="com.example.foodplanner.Presentation.filteredMealsScreen.view.FilteredMealsFragment"
         android:label="fragment_filtered_meals"
         tools:layout="@layout/fragment_filtered_meals" >
         <argument android:name="SendSelectedItem"
-            app:argType="com.example.foodplanner.model.wrapper.SendSelectedItem"
+            app:argType="com.example.foodplanner.Data.meals.model.wrapper.SendSelectedItem"
             />
         <action
             android:id="@+id/action_filteredMealsFragment_to_mealDetailsFragment"

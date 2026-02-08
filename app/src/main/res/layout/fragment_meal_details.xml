@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/btn_background"
-    tools:context=".view.mealDetailsScreen.MealDetailsFragment">
+    tools:context=".Presentation.mealDetailsScreen.view.MealDetailsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -73,7 +73,6 @@
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:scaleType="centerCrop"
-                            android:visibility="gone"
                             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                             app:strokeColor="@color/white"
                             app:strokeWidth="1dp" />
