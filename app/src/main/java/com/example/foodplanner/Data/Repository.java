@@ -8,6 +8,7 @@ import com.example.foodplanner.Data.meals.datasource.remote.MealDetailsRemoteDat
 import com.example.foodplanner.Data.meals.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.Data.meals.datasource.remote.MealsListCallback;
 import com.example.foodplanner.Data.meals.model.Country;
+import com.example.foodplanner.Data.meals.model.wrapper.SendSelectedItem;
 
 import java.util.List;
 
@@ -52,5 +53,9 @@ public class Repository {
 
     public void getMealDetails(int id, MealCallback mealCallback) {
         mealDetailsRemoteDataSource.getMealDetails(id, mealCallback);
+    }
+
+    public void getAllFilteredMeals(SendSelectedItem selectedItem, MealsListCallback mealsListCallback) {
+        mealRemoteDataSource.getAllFilteredMeals(selectedItem,mealsListCallback);
     }
 }

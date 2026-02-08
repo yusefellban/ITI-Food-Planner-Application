@@ -1,10 +1,11 @@
-package com.example.foodplanner.Presentation.filteredMealsScreen;
+package com.example.foodplanner.Presentation.filteredMealsScreen.view;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,8 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
+import com.example.foodplanner.Presentation.filteredMealsScreen.presenter.FilteredMealsPresenterImp;
 import com.example.foodplanner.R;
-import com.example.foodplanner.Data.meals.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.Data.meals.model.Meal;
 import com.example.foodplanner.Data.meals.datasource.remote.MealsListCallback;
 import com.example.foodplanner.Data.meals.model.wrapper.SendSelectedItem;
@@ -22,9 +24,11 @@ import com.example.foodplanner.Data.meals.model.wrapper.SendSelectedItem;
 import java.util.List;
 
 
-public class FilteredMealsFragment extends Fragment {
+public class FilteredMealsFragment extends Fragment implements onFilteredItemClickListener{
  private RecyclerView filteredMealsRecyclerView;
- private MealRemoteDataSource mealRemoteDataSource;
+    FilteredMealsAdapter adapter;
+ private FilteredMealsPresenterImp presenter;
+
 
     public FilteredMealsFragment() {
         // Required empty public constructor
@@ -44,16 +48,17 @@ public class FilteredMealsFragment extends Fragment {
         filteredMealsRecyclerView=view.findViewById(R.id.filteredMealsRecyclerView);
         filteredMealsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mealRemoteDataSource=new MealRemoteDataSource();
+        presenter=new FilteredMealsPresenterImp();
         //get selected item
         SendSelectedItem selectedItem = FilteredMealsFragmentArgs.fromBundle(getArguments()).getSendSelectedItem();
 
+        adapter=new FilteredMealsAdapter(view.getContext(),this);
 
 
-        mealRemoteDataSource.getAllFilteredMeals(selectedItem, new MealsListCallback() {
+        presenter.getAllFilteredMeals(selectedItem, new MealsListCallback() {
             @Override
             public void onSuccess(List<Meal> meals) {
-                FilteredMealsAdapter adapter=new FilteredMealsAdapter(view.getContext(),meals);
+                adapter.setMealList(meals);
                 filteredMealsRecyclerView.setAdapter(adapter);
             }
 
@@ -64,5 +69,13 @@ public class FilteredMealsFragment extends Fragment {
         });
 
 
+    }
+
+    @Override
+    public void showSelectedMeal(SelectedMeal selectedMeal) {
+        FilteredMealsFragmentDirections.ActionFilteredMealsFragmentToMealDetailsFragment action=
+                FilteredMealsFragmentDirections.actionFilteredMealsFragmentToMealDetailsFragment(selectedMeal);
+
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

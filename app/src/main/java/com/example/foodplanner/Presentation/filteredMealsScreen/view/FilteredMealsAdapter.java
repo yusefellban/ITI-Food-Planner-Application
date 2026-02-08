@@ -1,4 +1,4 @@
-package com.example.foodplanner.Presentation.filteredMealsScreen;
+package com.example.foodplanner.Presentation.filteredMealsScreen.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,13 +18,18 @@ import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
 
 import java.util.List;
 
-public class FilteredMealsAdapter extends RecyclerView.Adapter<FilteredMealsAdapter.ViewHolder>{
+public class FilteredMealsAdapter extends RecyclerView.Adapter<FilteredMealsAdapter.ViewHolder> {
 
     private List<Meal> mealList;
     private Context context;
+    private onFilteredItemClickListener onFilteredItemClickListener;
 
-    public FilteredMealsAdapter(Context context, List<Meal> mealList) {
+    public FilteredMealsAdapter(Context context,onFilteredItemClickListener onFilteredItemClickListener) {
         this.context = context;
+        this.onFilteredItemClickListener=onFilteredItemClickListener;
+    }
+
+    public void setMealList(List<Meal> mealList) {
         this.mealList = mealList;
     }
 
@@ -49,12 +54,8 @@ public class FilteredMealsAdapter extends RecyclerView.Adapter<FilteredMealsAdap
                     meal.getName(),
                     meal.getThumbnailUrl()
             );
+            onFilteredItemClickListener.showSelectedMeal(selectedMeal);
 
-
-            FilteredMealsFragmentDirections.ActionFilteredMealsFragmentToMealDetailsFragment action=
-                    FilteredMealsFragmentDirections.actionFilteredMealsFragmentToMealDetailsFragment(selectedMeal);
-
-            Navigation.findNavController(v).navigate(action);
         });
         /// Animation
         holder.itemView.setAlpha(0f);
@@ -77,7 +78,6 @@ public class FilteredMealsAdapter extends RecyclerView.Adapter<FilteredMealsAdap
     public int getItemCount() {
         return mealList.size();
     }
-
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
