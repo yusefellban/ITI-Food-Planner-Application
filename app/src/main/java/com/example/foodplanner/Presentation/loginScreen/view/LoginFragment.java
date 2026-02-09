@@ -38,9 +38,9 @@ public class LoginFragment extends Fragment implements LoginViewer {
     private EditText loginEmailInput;
     private EditText loginPassInput;
     private Button signIngoogleButton;
+    private Button loginGuestBtn;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
     private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseAuth mAuth;
     private LoginPresenterImp presenter;
 
     public LoginFragment() {
@@ -80,9 +80,9 @@ public class LoginFragment extends Fragment implements LoginViewer {
         loginPassInput = view.findViewById(R.id.loginPassInput);
         loginEmailInput = view.findViewById(R.id.loginEmailInput);
         signIngoogleButton = view.findViewById(R.id.signIngoogleButton);
+        loginGuestBtn = view.findViewById(R.id.loginGuestBtn);
 
         presenter = new LoginPresenterImp(this,getContext());
-        mAuth = FirebaseAuth.getInstance();
         presenter.cheekIfUserExist();
         presenter.setupGoogle();
 
@@ -97,6 +97,10 @@ public class LoginFragment extends Fragment implements LoginViewer {
 
         goToSignUp.setOnClickListener(v -> NavHostFragment.findNavController(this)
                 .navigate(R.id.action_loginFragment_to_registrationFragment));
+
+        loginGuestBtn.setOnClickListener((v)->{
+            navigateToHome();
+        });
     }
 
 
@@ -107,7 +111,6 @@ public class LoginFragment extends Fragment implements LoginViewer {
     @Override
     public void onStart() {
         super.onStart();
-//        if (mAuth.getCurrentUser() != null) navigateToHome();
     }
 
     //

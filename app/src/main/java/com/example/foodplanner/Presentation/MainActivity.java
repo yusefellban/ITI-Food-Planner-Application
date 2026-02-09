@@ -1,8 +1,11 @@
 package com.example.foodplanner.Presentation;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.splashscreen.SplashScreen;
 
 import androidx.activity.EdgeToEdge;
@@ -14,15 +17,20 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 
+import com.example.foodplanner.Data.AuthRepository;
+import com.example.foodplanner.Presentation.homeScreen.view.HomeFragment;
 import com.example.foodplanner.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
 public class MainActivity extends AppCompatActivity {
-
+ private BottomNavigationView bottomNavigationView;
+    NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
@@ -45,12 +53,12 @@ public class MainActivity extends AppCompatActivity {
                     .start();
         });
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
-        NavController navController = navHostFragment.getNavController();
+         navController = navHostFragment.getNavController();
 
-        NavigationUI.setupWithNavController(bottomNav, navController);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
 
 
@@ -86,11 +94,47 @@ public class MainActivity extends AppCompatActivity {
 
                 fab.animate().translationY(0).setDuration(50).start();
             }
+
+
+        });
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            AuthRepository authRepository=new AuthRepository(getApplicationContext());
+
+            int id = item.getItemId();
+
+            if (id == R.id.profileFragment ) {
+                if (!authRepository.isSharedLoggedIn()) {
+                    showGoToRegistrationDialog();
+                    return false;
+                }
+            }
+            return NavigationUI.onNavDestinationSelected(item, navController)
+                    || super.onOptionsItemSelected(item);
+
         });
 
 
 
-    }
 
+    }
+    public void showGoToRegistrationDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.CustomDialogTheme);
+        View view = getLayoutInflater().inflate(R.layout.goto_login_dialog_layout, null);
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        dialog.show();
+
+        view.findViewById(R.id.btn_confirm).setOnClickListener(v -> {
+            dialog.dismiss();
+            navController.navigate(R.id.registrationFragment);
+        });
+
+    }
 
 }
