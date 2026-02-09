@@ -7,4 +7,8 @@ public interface MealDetailsViewer {
      void showGoToRegistrationDialog();
 
      void goRegistration();
+     
+     void showCalendarDatePicker();
+     
+     void showMealAddedToCalendar(String date);
 }

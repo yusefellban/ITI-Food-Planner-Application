@@ -48,7 +48,7 @@ public class FilteredMealsFragment extends Fragment implements onFilteredItemCli
         filteredMealsRecyclerView=view.findViewById(R.id.filteredMealsRecyclerView);
         filteredMealsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        presenter=new FilteredMealsPresenterImp();
+        presenter=new FilteredMealsPresenterImp(getContext());
         //get selected item
         SendSelectedItem selectedItem = FilteredMealsFragmentArgs.fromBundle(getArguments()).getSendSelectedItem();
 

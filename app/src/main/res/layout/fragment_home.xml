@@ -18,20 +18,23 @@
  >
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/homeUserImage"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:layout_marginTop="20dp"
         android:contentDescription="@string/T_user_icon"
-        android:src="@drawable/ic_user_guest" />
+        android:src="@drawable/ic_user_guest"
+
+        app:shapeAppearanceOverlay="@style/RoundedCornerImage"/>
 
     <TextView
         android:id="@+id/homeUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/btn_background"
         android:text="@string/T_guest"
         android:textStyle="bold" />
 

@@ -103,4 +103,9 @@
             android:id="@+id/action_favoritesFragment_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.foodplanner.Presentation.calendarScreen.view.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" />
 </navigation>

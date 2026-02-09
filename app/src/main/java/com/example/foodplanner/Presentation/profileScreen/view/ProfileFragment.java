@@ -26,7 +26,7 @@ import com.example.foodplanner.R;
 public class ProfileFragment extends Fragment implements ProfileView {
 
     private ImageView profileImage;
-    private TextView profileUploadTextClick;
+    private ImageView profileUploadTextClick;
     private TextView profileUserName;
     private TextView profileUserEmail;
     private ProfilePresenterImp prsenter;

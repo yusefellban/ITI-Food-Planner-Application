@@ -74,7 +74,7 @@ public class DiscoveryFragment extends Fragment implements onClickDiscovery , Di
         chipCategory = view.findViewById(R.id.chipCategory);
         chipCountry = view.findViewById(R.id.chipCountry);
 
-        presenter=new DiscoveryPresenterImp(this);
+        presenter=new DiscoveryPresenterImp(this,getContext());
 
 
         discoveryAdapter = new DiscoveryAdapter(this);

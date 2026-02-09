@@ -11,9 +11,9 @@
         android:title="Search" />
 
     <item
-        android:id="@+id/placeholder"
-        android:title=""
-        android:enabled="false" />
+        android:id="@+id/calendarFragment"
+        android:icon="@drawable/ic_calendar"
+        android:title="Calendar" />
 
     <item
         android:id="@+id/favoritesFragment"

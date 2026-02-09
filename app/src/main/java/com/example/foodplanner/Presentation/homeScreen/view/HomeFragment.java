@@ -2,6 +2,7 @@ package com.example.foodplanner.Presentation.homeScreen.view;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,8 @@ public class HomeFragment extends Fragment implements onItemClickListener, HomeV
     private TextView homeRecipeTitle;
     private TextView homeTag1;
     private TextView homeTag2;
+    private TextView homeUserName;
+    private ImageView homeUserImage;
 
     private ShimmerFrameLayout shimmerFrameLayout;
     private ShimmerFrameLayout shimmerCarousel;
@@ -79,14 +82,16 @@ public class HomeFragment extends Fragment implements onItemClickListener, HomeV
         shimmerCarousel = view.findViewById(R.id.homeProductShimmerLayout);
         recyclerView = view.findViewById(R.id.homeProductsRecyclerView);
         cookNow = view.findViewById(R.id.homeCookNow);
+        homeUserName = view.findViewById(R.id.homeUserName);
+        homeUserImage = view.findViewById(R.id.homeUserImage);
 
-        presenter = new HomePresenterImp( this);
+        presenter = new HomePresenterImp(this, getContext());
 
         adapter = new HomeCarouselAdapter(getContext(), this);
 
 
         presenter.setRefreshManager();
-
+        presenter.getUserData();
         loadAllData();
 
         view.findViewById(R.id.ffa).setOnClickListener((e) -> {
@@ -205,6 +210,7 @@ public class HomeFragment extends Fragment implements onItemClickListener, HomeV
     public void setMealListAdapter(List<Meal> meals) {
         adapter.setMealList(meals);
     }
+
     @Override
     public void checkIfAllLoadingFinished() {
         RefreshManager.stopRefreshing(swipeLayout);
@@ -226,10 +232,9 @@ public class HomeFragment extends Fragment implements onItemClickListener, HomeV
 
         view.findViewById(R.id.btn_confirm).setOnClickListener(v -> {
             dialog.dismiss();
-           presenter.goToRegistration();
+            presenter.goToRegistration();
         });
     }
-
 
 
     @Override
@@ -244,9 +249,22 @@ public class HomeFragment extends Fragment implements onItemClickListener, HomeV
                 HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(selectedMeal);
         Navigation.findNavController(getView()).navigate(action);
     }
+
     @Override
-    public void goToRegistration(){
+    public void goToRegistration() {
         NavHostFragment.findNavController(HomeFragment.this)
                 .navigate(R.id.action_homeFragment_to_registrationFragment);
+    }
+
+    @Override
+    public void setUserData(String displayName, Uri photoUrl) {
+
+        homeUserName.setText(displayName);
+
+        Glide.with(requireContext())
+                .load(photoUrl)
+                .placeholder(R.drawable.ic_user_guest)
+                .centerCrop()
+                .into(homeUserImage);
     }
 }

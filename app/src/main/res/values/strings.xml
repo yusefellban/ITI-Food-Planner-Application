@@ -33,4 +33,13 @@
     <string name="default_web_client_id">368011878400-bh20lmt98o1l2s508celbrb3qv6qk5v8.apps.googleusercontent.com</string>
     <string name="T_loout">Loout</string>
     <string name="T_add_to_favorites">Add to favorit\n</string>
+    <string name="offline_indicator">Offline indicator</string>
+    <string name="you_are_offline">You\'re offline - Viewing cached data</string>
+    <string name="meals_for_selected_date">Meals for Selected Date</string>
+    <string name="no_meals_scheduled">No meals scheduled for this day</string>
+    <string name="meal_image">Meal Image</string>
+    <string name="remove_meal">Remove meal</string>
+    <string name="add_meal_to_calendar">Add meal to calendar</string>
+    <string name="meal_added_to_calendar">Meal added to calendar</string>
+    <string name="meal_removed_from_calendar">Meal removed from calendar</string>
 </resources>

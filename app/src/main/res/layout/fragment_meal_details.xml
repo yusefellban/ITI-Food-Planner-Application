@@ -101,7 +101,10 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin">
+
+
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -177,8 +180,8 @@
                 android:layout_height="250dp"
                 android:layout_below="@+id/videoTutorialText"
 
-                app:videoId="XTIxgbEeJ84"
-                app:autoPlay="true" />
+                app:autoPlay="true"
+                app:videoId="XTIxgbEeJ84" />
 
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
@@ -190,11 +193,28 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="40dp"
         android:layout_marginEnd="24dp"
-        android:src="@drawable/ic_favorite_border"
         android:contentDescription="@string/T_add_to_favorites"
-        app:tint="@color/red"
+        android:src="@drawable/ic_favorite_border"
         app:backgroundTint="@color/logo_color"
+        app:elevation="6dp"
         app:fabSize="normal"
-        app:elevation="6dp" />
+        app:tint="@color/red" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addToCalendarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="120dp"
+        android:contentDescription="@string/T_add_to_favorites"
+
+        android:src="@drawable/ic_schedule"
+        app:backgroundTint="@color/logo_color"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:tint="@color/always_black" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
