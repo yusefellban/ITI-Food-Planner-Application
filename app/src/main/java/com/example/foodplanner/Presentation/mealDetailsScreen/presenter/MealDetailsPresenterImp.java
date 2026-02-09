@@ -1,16 +1,33 @@
 package com.example.foodplanner.Presentation.mealDetailsScreen.presenter;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.example.foodplanner.Data.AuthRepository;
 import com.example.foodplanner.Data.MealRepository;
+import com.example.foodplanner.Data.UserRepository;
 import com.example.foodplanner.Data.meals.datasource.remote.MealCallback;
+import com.example.foodplanner.Data.meals.model.Meal;
 import com.example.foodplanner.Presentation.mealDetailsScreen.view.MealDetailsViewer;
 
-public class MealDetailsPresenterImp implements MealDetailsPresenter {
-    private final MealRepository mealRepository;
-    private final MealDetailsViewer mealDetailsViewer;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
-    public MealDetailsPresenterImp(MealDetailsViewer mealDetailsViewer) {
+public class MealDetailsPresenterImp implements MealDetailsPresenter {
+    private static final String TAG = "MealDetailsPresenter";
+    private final MealRepository mealRepository;
+    private final UserRepository userRepository;
+    private final MealDetailsViewer mealDetailsViewer;
+    private final CompositeDisposable compositeDisposable;
+    private final AuthRepository authRepository;
+    private boolean isFavorite = false;
+
+    public MealDetailsPresenterImp(MealDetailsViewer mealDetailsViewer, Context context) {
         this.mealDetailsViewer = mealDetailsViewer;
-        mealRepository =new MealRepository();
+        this.mealRepository = new MealRepository();
+        this.compositeDisposable = new CompositeDisposable();
+        userRepository=new UserRepository(context);
+        authRepository=new AuthRepository(context);
     }
 
     @Override
@@ -27,7 +44,6 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter {
     public void setupYoutubePlayer(String youtubeUrl) {
         mealDetailsViewer.setupYoutubePlayer(getYoutubeVideoId(youtubeUrl));
     }
-
 
     @Override
     public String getYoutubeVideoId(String youtubeUrl) {
@@ -57,4 +73,59 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter {
         return videoId;
     }
 
+    @Override
+    public void checkIfFavorite(int mealId) {
+        Disposable disposable = userRepository.isFavorite(mealId)
+                .subscribe(
+                        isFav -> {
+                            this.isFavorite = isFav;
+                            mealDetailsViewer.updateFavoriteButton(isFav);
+                        },
+                        error -> Log.e(TAG, "Error checking favorite status", error)
+                );
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void toggleFavorite(Meal meal) {
+        if(!authRepository.isSharedLoggedIn()){
+            mealDetailsViewer.showGoToRegistrationDialog();
+            return;
+        }
+        if (isFavorite) {
+            // Remove from favorites
+            Disposable disposable = userRepository.removeFromFavorites(Integer.parseInt(meal.getId()))
+                    .subscribe(
+                            () -> {
+                                isFavorite = false;
+                                mealDetailsViewer.updateFavoriteButton(false);
+                                Log.d(TAG, "Meal removed from favorites");
+                            },
+                            error -> Log.e(TAG, "Error removing from favorites", error)
+                    );
+            compositeDisposable.add(disposable);
+        } else {
+            // Add to favorites
+            Disposable disposable = userRepository.addToFavorites(meal)
+                    .subscribe(
+                            () -> {
+                                isFavorite = true;
+                                mealDetailsViewer.updateFavoriteButton(true);
+                                Log.d(TAG, "Meal added to favorites");
+                            },
+                            error -> Log.e(TAG, "Error adding to favorites", error)
+                    );
+            compositeDisposable.add(disposable);
+        }
+    }
+
+    @Override
+    public void goToRegistration() {
+        mealDetailsViewer.goRegistration();
+    }
+
+
+    public void onDestroy() {
+        compositeDisposable.clear();
+    }
 }
