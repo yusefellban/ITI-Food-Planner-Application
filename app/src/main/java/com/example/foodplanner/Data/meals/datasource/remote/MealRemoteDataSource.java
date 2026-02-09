@@ -24,6 +24,27 @@ public class MealRemoteDataSource {
         mealApis = Network.getInstance().getMealsAPI();
     }
 
+    public void getMealDetails(int id,MealCallback mealCallback) {
+        mealApis.getMealByID(String.valueOf(id)).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.body() != null && response.body().getMeals() != null) {
+                    Meal meal = response.body().getMeals().get(0);
+                    mealCallback.onSuccess(meal);
+                } else {
+                    mealCallback.onError("No meal found");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                mealCallback.onError(t.getMessage());
+
+            }
+        });
+
+    }
+
     /// home screen
     public void getRandomMeal(MealCallback callback) {
 

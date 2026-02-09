@@ -14,7 +14,6 @@ import com.example.foodplanner.Data.meals.datasource.local.CountryCodeLocalData;
 import com.example.foodplanner.Data.meals.datasource.remote.CategoriesResponseCallback;
 import com.example.foodplanner.Data.meals.datasource.remote.IngredientResponseCallback;
 import com.example.foodplanner.Data.meals.datasource.remote.MealCallback;
-import com.example.foodplanner.Data.meals.datasource.remote.MealDetailsRemoteDataSource;
 import com.example.foodplanner.Data.meals.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.Data.meals.datasource.remote.MealsListCallback;
 import com.example.foodplanner.Data.meals.model.Country;
@@ -34,7 +33,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MealRepository {
     private final CountryCodeLocalData countryCodeLocalData;
     private final MealRemoteDataSource mealRemoteDataSource;
-    private final MealDetailsRemoteDataSource mealDetailsRemoteDataSource;
+//    private final MealDetailsRemoteDataSource mealDetailsRemoteDataSource;
     private final MealPlanLocalDataSource localDataSource;
     private final MealPlanRemoteDataSource remoteDataSource;
     private final FirebaseAuth firebaseAuth;
@@ -44,7 +43,7 @@ public class MealRepository {
     public MealRepository(Context context) {
         countryCodeLocalData = new CountryCodeLocalData();
         mealRemoteDataSource = new MealRemoteDataSource();
-        mealDetailsRemoteDataSource=new MealDetailsRemoteDataSource();
+//        mealDetailsRemoteDataSource=new MealDetailsRemoteDataSource();
         this.context=context;
         this.localDataSource = new MealPlanLocalDataSourceImp(AppDatabase.getInstance(this.context).scheduledMealDao());
         this.remoteDataSource = new MealPlanRemoteDataSourceImp();
@@ -80,7 +79,7 @@ public class MealRepository {
     }
 
     public void getMealDetails(int id, MealCallback mealCallback) {
-        mealDetailsRemoteDataSource.getMealDetails(id, mealCallback);
+        mealRemoteDataSource.getMealDetails(id, mealCallback);
     }
 
     public void getAllFilteredMeals(SendSelectedItem selectedItem, MealsListCallback mealsListCallback) {
