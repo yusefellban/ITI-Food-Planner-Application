@@ -3,6 +3,7 @@ package com.example.foodplanner.Data;
 import com.example.foodplanner.Data.auth.datasource.AuthRemoteDataSource;
 import com.example.foodplanner.Data.auth.datasource.AuthRemoteDataSourceImp;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
 import io.reactivex.rxjava3.core.Single;
 
@@ -25,4 +26,7 @@ public class AuthRepository {
         return remoteDataSource.registerWithEmail(fullName, email, password);
     }
 
+    public Single<FirebaseUser> getUserInfo() {
+        return remoteDataSource.getCurrentUser();
+    }
 }

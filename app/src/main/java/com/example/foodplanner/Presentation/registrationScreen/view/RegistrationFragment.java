@@ -92,7 +92,7 @@ public class RegistrationFragment extends Fragment implements RegistrationViewer
         mAuth = FirebaseAuth.getInstance();
 
 
-        presenter = new RegistrationPresenterImp(this);
+        presenter = new RegistrationPresenterImp(getContext(),this);
 
         setupGoogleClient();
 
