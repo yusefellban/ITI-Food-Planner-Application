@@ -12,12 +12,12 @@ import com.example.foodplanner.Data.meals.model.wrapper.SendSelectedItem;
 
 import java.util.List;
 
-public class Repository {
+public class MealRepository {
     private final CountryCodeLocalDataSource countryCodeLocalDataSource;
     private final MealRemoteDataSource mealRemoteDataSource;
     private final MealDetailsRemoteDataSource mealDetailsRemoteDataSource;
 
-    public Repository() {
+    public MealRepository() {
         countryCodeLocalDataSource = new CountryCodeLocalDataSource();
         mealRemoteDataSource = new MealRemoteDataSource();
         mealDetailsRemoteDataSource=new MealDetailsRemoteDataSource();
