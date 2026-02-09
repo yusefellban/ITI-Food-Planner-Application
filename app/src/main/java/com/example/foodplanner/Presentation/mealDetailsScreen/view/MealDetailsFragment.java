@@ -1,10 +1,14 @@
 package com.example.foodplanner.Presentation.mealDetailsScreen.view;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -13,6 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.foodplanner.Presentation.homeScreen.view.HomeFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.Presentation.mealDetailsScreen.presenter.MealDetailsPresenterImp;
@@ -41,10 +49,12 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
     private TextView detailsCategory;
     private RecyclerView detailsIngredientsRecyclerView;
     private RecyclerView detailsInstructionRecyclerView;
+    private FloatingActionButton favoriteFab;
 
     private YouTubePlayerView youtubePlayerView;
 
     private SelectedMeal selectedMeal;
+    private Meal currentMeal;
 
     private MealDetailsPresenterImp presenter;
 
@@ -72,10 +82,11 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
         detailsIngredientsRecyclerView = view.findViewById(R.id.detailsIngredientsRecyclerView);
         detailsInstructionRecyclerView = view.findViewById(R.id.detailsInstructionRecyclerView);
         detailsIngredientsItems = view.findViewById(R.id.detailsIngredientsItems);
+        favoriteFab = view.findViewById(R.id.favoriteFab);
 
 
         selectedMeal = MealDetailsFragmentArgs.fromBundle(getArguments()).getSelectedMeal();
-        presenter=new MealDetailsPresenterImp(this);
+        presenter=new MealDetailsPresenterImp(this, requireContext());
 
         detailsMealName.setText(selectedMeal.getName());
 
@@ -84,6 +95,16 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
                 .placeholder(R.drawable.rounded_image)
                 .centerCrop()
                 .into(detailsMealImage);
+
+        // Setup FAB click listener
+        favoriteFab.setOnClickListener(v -> {
+            if (currentMeal != null) {
+                presenter.toggleFavorite(currentMeal);
+            }
+        });
+
+        // Check if meal is already in favorites
+        presenter.checkIfFavorite(selectedMeal.getId());
 
         fetchSelectedMeal();
 
@@ -100,7 +121,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
         presenter.getMealDetails(selectedMeal.getId(), new MealCallback() {
             @Override
             public void onSuccess(Meal myMeal) {
-
+                 currentMeal = myMeal;
                  String flagUrl=presenter.getCountryFlagUrl(myMeal.getArea());
                 Glide.with(requireContext()).load(flagUrl).circleCrop().into(detailsAreaIcon);
 
@@ -150,5 +171,46 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
         });
     }
 
+    @Override
+    public void updateFavoriteButton(boolean isFavorite) {
+        if (isFavorite) {
+            favoriteFab.setImageResource(R.drawable.ic_favorite_filled);
+        } else {
+            favoriteFab.setImageResource(R.drawable.ic_favorite_border);
+        }
+    }
 
+    @Override
+    public void showGoToRegistrationDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.CustomDialogTheme);
+        View view = getLayoutInflater().inflate(R.layout.goto_login_dialog_layout, null);
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        dialog.show();
+
+        view.findViewById(R.id.btn_confirm).setOnClickListener(v -> {
+            dialog.dismiss();
+            presenter.goToRegistration();
+        });
+    }
+
+    @Override
+    public void goRegistration() {
+        NavHostFragment.findNavController(MealDetailsFragment.this)
+                .navigate(R.id.action_mealDetailsFragment_to_registrationFragment);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (presenter != null) {
+            presenter.onDestroy();
+        }
+    }
 }

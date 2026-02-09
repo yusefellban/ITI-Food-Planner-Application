@@ -183,4 +183,18 @@
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/favoriteFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="40dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_favorite_border"
+        android:contentDescription="@string/T_add_to_favorites"
+        app:tint="@color/red"
+        app:backgroundTint="@color/logo_color"
+        app:fabSize="normal"
+        app:elevation="6dp" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
