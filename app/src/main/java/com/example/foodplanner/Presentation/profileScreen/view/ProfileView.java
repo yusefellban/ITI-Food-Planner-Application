@@ -9,4 +9,5 @@ public interface ProfileView {
 
     void showError(String error);
     void showUserData(String name, String email, String photoUrl);
+    void onLogoutSuccess();
 }

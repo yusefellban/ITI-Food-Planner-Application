@@ -5,29 +5,22 @@ import android.util.Log;
 
 import com.example.foodplanner.Data.AuthRepository;
 import com.example.foodplanner.Data.UserRepository;
-import com.example.foodplanner.Data.auth.datasource.AuthRemoteDataSourceImp;
 import com.example.foodplanner.Data.user.Entity.UserEntity;
 import com.example.foodplanner.Presentation.registrationScreen.view.RegistrationViewer;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class RegistrationPresenterImp implements RegistrationPresenter {
     private final RegistrationViewer view;
-    private final AuthRepository repo;
+    private final AuthRepository authRepository;
     private final UserRepository userRepository;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     public RegistrationPresenterImp(Context context, RegistrationViewer view) {
         this.view = view;
-        this.repo = new AuthRepository();
+        this.authRepository = new AuthRepository(context);
         userRepository = new UserRepository(context)
         ;
     }
@@ -36,7 +29,7 @@ public class RegistrationPresenterImp implements RegistrationPresenter {
     public void register(String name, String email, String password) {
         view.showLoading();
         disposable.add(
-                repo.registerWithEmail(name, email, password)
+                authRepository.registerWithEmail(name, email, password)
                         .subscribeOn(Schedulers.io())
                         .flatMapCompletable(result -> {
                             UserEntity userEntity = new UserEntity(
@@ -54,6 +47,7 @@ public class RegistrationPresenterImp implements RegistrationPresenter {
                         .subscribe(
                                 () -> {
                                     view.hideLoading();
+                                    authRepository.setSharedLoggedIn(true);
                                     view.onRegistrationSuccess();
                                 },
                                 throwable -> {
@@ -69,7 +63,7 @@ public class RegistrationPresenterImp implements RegistrationPresenter {
         view.showLoading();
 
         disposable.add(
-                repo.loginWithGoogle(idToken)
+                authRepository.loginWithGoogle(idToken)
                         .subscribeOn(Schedulers.io())
                         .flatMapCompletable(result -> {
 
@@ -96,6 +90,7 @@ public class RegistrationPresenterImp implements RegistrationPresenter {
                         .subscribe(
                                 () -> {
                                     view.hideLoading();
+                                    authRepository.setSharedLoggedIn(true);
                                     view.onRegistrationSuccess();
                                 },
                                 throwable -> {

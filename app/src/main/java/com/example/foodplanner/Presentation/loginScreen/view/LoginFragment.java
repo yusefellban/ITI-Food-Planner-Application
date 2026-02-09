@@ -81,10 +81,9 @@ public class LoginFragment extends Fragment implements LoginViewer {
         loginEmailInput = view.findViewById(R.id.loginEmailInput);
         signIngoogleButton = view.findViewById(R.id.signIngoogleButton);
 
-        presenter = new LoginPresenterImp(this);
+        presenter = new LoginPresenterImp(this,getContext());
         mAuth = FirebaseAuth.getInstance();
-
-
+        presenter.cheekIfUserExist();
         presenter.setupGoogle();
 
 

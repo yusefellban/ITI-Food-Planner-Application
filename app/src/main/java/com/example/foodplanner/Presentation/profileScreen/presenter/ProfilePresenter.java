@@ -5,4 +5,5 @@ public interface ProfilePresenter {
      void changeProfileImage(String newPath);
      void trackProfileImage() ;
      void dispose() ;
+     void performLogout();
     }

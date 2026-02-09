@@ -21,7 +21,7 @@ public class ProfilePresenterImp implements ProfilePresenter {
 
     public ProfilePresenterImp(Context context, ProfileView view) {
         this.userRepository = new UserRepository(context);
-        authRepository = new AuthRepository();
+        authRepository = new AuthRepository(context);
         this.view = view;
     }
 
@@ -66,5 +66,26 @@ public class ProfilePresenterImp implements ProfilePresenter {
         disposable.clear();
     }
 
+
+    @Override
+    public void performLogout() {
+        disposable.add(
+                authRepository.logout()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .andThen(userRepository.logout())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                () -> {
+                                    Log.d("LOGOUT", "Firebase and Local DB cleared");
+                                    view.onLogoutSuccess();
+                                },
+                                throwable -> {
+                                    Log.e("LOGOUT", "Error during logout", throwable);
+                                    view.showError("Logout failed: " + throwable.getMessage());
+                                }
+                        )
+        );
+    }
 
 }

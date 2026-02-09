@@ -26,5 +26,7 @@ public interface UserDao {
 
     @Query("UPDATE user_profile SET imagePath = :newPath WHERE uid = :userId")
     Completable updateOnlyImagePath(String userId, String newPath);
+    @Query("DELETE FROM user_profile")
+    Completable deleteAllUsers();
 
 }

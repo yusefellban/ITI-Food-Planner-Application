@@ -37,5 +37,7 @@ public class UserLocalDataSource {
         return userDao.insertOrUpdate(userEntity);
     }
 
-
+    public Completable clearAllData() {
+        return userDao.deleteAllUsers();
+    }
 }

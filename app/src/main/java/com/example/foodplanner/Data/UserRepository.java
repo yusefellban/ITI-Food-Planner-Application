@@ -37,4 +37,9 @@ public class UserRepository {
                 .subscribeOn(Schedulers.io());
     }
 
+    public Completable logout() {
+        return userLocalDataSource.clearAllData()
+                .subscribeOn(Schedulers.io());
+    }
+
 }

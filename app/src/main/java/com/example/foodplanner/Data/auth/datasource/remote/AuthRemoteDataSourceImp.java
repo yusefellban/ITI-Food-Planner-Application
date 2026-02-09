@@ -1,4 +1,4 @@
-package com.example.foodplanner.Data.auth.datasource;
+package com.example.foodplanner.Data.auth.datasource.remote;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleEmitter;
 
@@ -75,6 +76,10 @@ public class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
                 emitter.onError(new Throwable("No user logged in"));
             }
         });
+    }
+    @Override
+    public Completable logout() {
+        return Completable.fromAction(() -> mAuth.signOut());
     }
 
     private void saveToFirestore(String uid, String name, String email, SingleEmitter<AuthResult> emitter, AuthResult result) {

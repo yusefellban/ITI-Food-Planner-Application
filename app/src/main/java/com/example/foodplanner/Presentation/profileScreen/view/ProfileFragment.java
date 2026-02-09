@@ -8,10 +8,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
     private TextView profileUserName;
     private TextView profileUserEmail;
     private ProfilePresenterImp prsenter;
+    private Button logout;
 
     private  ActivityResultLauncher<PickVisualMediaRequest> pickMedia ;
 
@@ -63,6 +66,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
         profileUploadTextClick = view.findViewById(R.id.profileUploadText);
         profileUserName = view.findViewById(R.id.profileUserName);
         profileUserEmail = view.findViewById(R.id.profileUserEmail);
+        logout = view.findViewById(R.id.logoutBtn);
         prsenter=new ProfilePresenterImp(getContext(),this);
 
         profileUploadTextClick.setOnClickListener((v) -> {
@@ -74,6 +78,11 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
         prsenter.getCurrentLocalUser();
         prsenter.trackProfileImage();
+
+
+        logout.setOnClickListener((v)->{
+            prsenter.performLogout();
+        });
 
 
     }
@@ -111,5 +120,10 @@ public class ProfileFragment extends Fragment implements ProfileView {
                 .load(photoUrl)
                 .placeholder(R.drawable.ic_user_guest)
                 .into(profileImage);
+    }
+
+    @Override
+    public void onLogoutSuccess() {
+        NavHostFragment.findNavController(this).navigate(R.id.action_profileFragment_to_loginFragment);
     }
 }

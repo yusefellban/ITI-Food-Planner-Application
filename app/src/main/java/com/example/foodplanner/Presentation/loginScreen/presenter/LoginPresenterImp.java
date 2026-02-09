@@ -1,7 +1,12 @@
 package com.example.foodplanner.Presentation.loginScreen.presenter;
 
 
+import android.content.Context;
+import android.util.Log;
+
 import com.example.foodplanner.Data.AuthRepository;
+import com.example.foodplanner.Data.UserRepository;
+import com.example.foodplanner.Data.user.Entity.UserEntity;
 import com.example.foodplanner.Presentation.loginScreen.view.LoginViewer;
 
 
@@ -13,11 +18,15 @@ public class LoginPresenterImp implements LoginPresenter {
 
     private final LoginViewer loginViewer;
     private final AuthRepository authRepository;
+    private final UserRepository userRepository;
+
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public LoginPresenterImp(LoginViewer loginViewer) {
+    public LoginPresenterImp(LoginViewer loginViewer, Context context) {
         this.loginViewer = loginViewer;
-        this.authRepository = new AuthRepository();
+        this.authRepository = new AuthRepository(context);
+        this.userRepository = new UserRepository(context);
+
     }
 
     @Override
@@ -30,6 +39,7 @@ public class LoginPresenterImp implements LoginPresenter {
                         .subscribe(
                                 result -> {
                                     loginViewer.hideLoading();
+                                    authRepository.setSharedLoggedIn(true);
                                     loginViewer.onLoginSuccess();
                                 },
                                 throwable -> {
@@ -46,10 +56,32 @@ public class LoginPresenterImp implements LoginPresenter {
         compositeDisposable.add(
                 authRepository.loginWithGoogle(idToken)
                         .subscribeOn(Schedulers.io())
+                        .flatMapCompletable(result -> {
+
+                            String uid = result.getUser().getUid();
+                            String name = result.getUser().getDisplayName();
+                            String email = result.getUser().getEmail();
+                            String photoUrl = (result.getUser().getPhotoUrl() != null) ? result.getUser().getPhotoUrl().toString() : "";
+
+
+                            UserEntity userEntity = new UserEntity(
+                                    uid,
+                                    name,
+                                    email,
+                                    photoUrl
+                            );
+
+                            Log.d("google add to local", userEntity.toString());
+
+                            return userRepository.addUser(userEntity)
+                                    .doOnComplete(() -> Log.d("ROOM", "User inserted"))
+                                    .doOnError(e -> Log.e("ROOM", "Insert error", e));
+                        })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                result -> {
+                                () -> {
                                     loginViewer.hideLoading();
+                                    authRepository.setSharedLoggedIn(true);
                                     loginViewer.onLoginSuccess();
                                 },
                                 throwable -> {
@@ -59,11 +91,14 @@ public class LoginPresenterImp implements LoginPresenter {
                         )
         );
     }
+
+
     @Override
     public void openGoogleSignInMap() {
 
         loginViewer.openGoogleSignInMap();
     }
+
     @Override
     public void setupGoogle() {
         loginViewer.setupGoogleClient();
@@ -72,5 +107,11 @@ public class LoginPresenterImp implements LoginPresenter {
     @Override
     public void dispose() {
         compositeDisposable.clear();
+    }
+
+    public void cheekIfUserExist(){
+        if(authRepository.isSharedLoggedIn()){
+            loginViewer.onLoginSuccess();
+        }
     }
 }
