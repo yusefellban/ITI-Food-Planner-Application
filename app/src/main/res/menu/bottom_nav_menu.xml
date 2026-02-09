@@ -16,9 +16,9 @@
         android:enabled="false" />
 
     <item
-        android:id="@+id/savedFragment"
+        android:id="@+id/favoritesFragment"
         android:icon="@drawable/ic_favorite"
-        android:title="Saved" />
+        android:title="Favorites" />
 
     <item
         android:id="@+id/profileFragment"

@@ -74,6 +74,7 @@ public class ProfilePresenterImp implements ProfilePresenter {
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .andThen(userRepository.logout())
+                        .andThen(userRepository.clearAllFavorites())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 () -> {

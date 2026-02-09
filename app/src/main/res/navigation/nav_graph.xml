@@ -60,6 +60,9 @@
         <argument
             android:name="SelectedMeal"
             app:argType="com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal" />
+        <action
+            android:id="@+id/action_mealDetailsFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/discoveryFragment"
@@ -90,5 +93,14 @@
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.foodplanner.Presentation.favoritesScreen.view.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
     </fragment>
 </navigation>
