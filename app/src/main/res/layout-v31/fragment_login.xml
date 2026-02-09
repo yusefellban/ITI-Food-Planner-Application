@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".Presentation.LoginFragment">
+    tools:context=".Presentation.loginScreen.view.LoginFragment">
 
 
     <ImageView
@@ -46,7 +46,7 @@
         android:layout_marginTop="20dp"
         android:autofillHints="emailAddress"
         android:background="@drawable/bg_input_rounded"
-        android:drawableStart="@drawable/ic_mail_scaled"
+        android:drawableStart="@drawable/ic_mail"
         android:drawablePadding="12dp"
         android:ems="10"
         android:hint="@string/H_enter_email"
@@ -64,7 +64,7 @@
         android:layout_marginTop="10dp"
         android:autofillHints="password"
         android:background="@drawable/bg_input_rounded"
-        android:drawableStart="@drawable/ic_password_scales"
+        android:drawableStart="@drawable/ic_password"
         android:drawablePadding="12dp"
         android:ems="10"
         android:hint="@string/H_enter_password"
@@ -120,7 +120,7 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/googleButton"
+        android:id="@+id/signIngoogleButton"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_below="@+id/orDividerLayout"
@@ -157,7 +157,7 @@
         android:id="@+id/doNotHaveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/googleButton"
+        android:layout_below="@id/signIngoogleButton"
         android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true">
 

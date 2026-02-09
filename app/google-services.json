@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "368011878400",
+    "project_id": "iti-food-planner",
+    "storage_bucket": "iti-food-planner.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368011878400:android:8bfe17f8e957e6dae138e5",
+        "android_client_info": {
+          "package_name": "com.example.foodplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368011878400-6m0n1i4jlmq6ds17r0iun00vp4oi18vr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodplanner",
+            "certificate_hash": "5c705af7de85166e560b7186bc7f55c094c9b3f5"
+          }
+        },
+        {
+          "client_id": "368011878400-bh20lmt98o1l2s508celbrb3qv6qk5v8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwm-a-O_bEHES0Ekb3QzQ4gUGix3Ib6jA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368011878400-bh20lmt98o1l2s508celbrb3qv6qk5v8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

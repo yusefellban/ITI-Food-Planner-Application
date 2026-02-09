@@ -1,28 +1,26 @@
 package com.example.foodplanner.Presentation.mealDetailsScreen.presenter;
 
-import com.example.foodplanner.Data.Repository;
-import com.example.foodplanner.Data.meals.datasource.local.CountryCodeLocalDataSource;
+import com.example.foodplanner.Data.MealRepository;
 import com.example.foodplanner.Data.meals.datasource.remote.MealCallback;
-import com.example.foodplanner.Data.meals.datasource.remote.MealDetailsRemoteDataSource;
 import com.example.foodplanner.Presentation.mealDetailsScreen.view.MealDetailsViewer;
 
 public class MealDetailsPresenterImp implements MealDetailsPresenter {
-    private final Repository repository;
+    private final MealRepository mealRepository;
     private final MealDetailsViewer mealDetailsViewer;
 
     public MealDetailsPresenterImp(MealDetailsViewer mealDetailsViewer) {
         this.mealDetailsViewer = mealDetailsViewer;
-        repository=new Repository();
+        mealRepository =new MealRepository();
     }
 
     @Override
     public void getMealDetails(int id, MealCallback mealCallback) {
-        repository.getMealDetails(id, mealCallback);
+        mealRepository.getMealDetails(id, mealCallback);
     }
 
     @Override
     public String getCountryFlagUrl(String area) {
-        return repository.getImageUrl(area);
+        return mealRepository.getImageUrl(area);
     }
 
     @Override
