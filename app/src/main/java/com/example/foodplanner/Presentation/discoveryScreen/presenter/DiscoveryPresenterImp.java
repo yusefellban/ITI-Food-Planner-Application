@@ -1,5 +1,7 @@
 package com.example.foodplanner.Presentation.discoveryScreen.presenter;
 
+import android.content.Context;
+
 import com.example.foodplanner.Data.MealRepository;
 import com.example.foodplanner.Data.meals.datasource.remote.CategoriesResponseCallback;
 import com.example.foodplanner.Data.meals.datasource.remote.IngredientResponseCallback;
@@ -13,8 +15,8 @@ public class DiscoveryPresenterImp implements DiscoveryPresenter{
     private MealRepository mealRepository;
     private DiscoveryViewer discoveryViewer;
 
-    public DiscoveryPresenterImp(DiscoveryViewer discoveryViewer) {
-        mealRepository = new MealRepository();
+    public DiscoveryPresenterImp(DiscoveryViewer discoveryViewer, Context context) {
+        mealRepository = new MealRepository(context);
         this.discoveryViewer = discoveryViewer;
     }
 

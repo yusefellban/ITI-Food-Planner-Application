@@ -8,6 +8,7 @@ import com.example.foodplanner.Data.MealRepository;
 import com.example.foodplanner.Data.UserRepository;
 import com.example.foodplanner.Data.meals.datasource.remote.MealCallback;
 import com.example.foodplanner.Data.meals.model.Meal;
+import com.example.foodplanner.Data.mealplan.model.ScheduledMeal;
 import com.example.foodplanner.Presentation.mealDetailsScreen.view.MealDetailsViewer;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -17,6 +18,7 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter {
     private static final String TAG = "MealDetailsPresenter";
     private final MealRepository mealRepository;
     private final UserRepository userRepository;
+
     private final MealDetailsViewer mealDetailsViewer;
     private final CompositeDisposable compositeDisposable;
     private final AuthRepository authRepository;
@@ -24,7 +26,7 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter {
 
     public MealDetailsPresenterImp(MealDetailsViewer mealDetailsViewer, Context context) {
         this.mealDetailsViewer = mealDetailsViewer;
-        this.mealRepository = new MealRepository();
+        this.mealRepository = new MealRepository(context);
         this.compositeDisposable = new CompositeDisposable();
         userRepository=new UserRepository(context);
         authRepository=new AuthRepository(context);
@@ -124,6 +126,28 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter {
         mealDetailsViewer.goRegistration();
     }
 
+    @Override
+    public void addToCalendar(Meal meal, String date) {
+        ScheduledMeal scheduledMeal = new ScheduledMeal(
+                meal.getId(),
+                meal.getName(),
+                meal.getThumbnailUrl(),
+                meal.getCategory(),
+                date
+        );
+        
+        Disposable disposable = mealRepository.scheduleMeal(scheduledMeal)
+                .subscribe(
+                        () -> {
+                            Log.d(TAG, "Meal added to calendar successfully");
+                            mealDetailsViewer.showMealAddedToCalendar(date);
+                        },
+                        error -> {
+                            Log.e(TAG, "Error adding meal to calendar", error);
+                        }
+                );
+        compositeDisposable.add(disposable);
+    }
 
     public void onDestroy() {
         compositeDisposable.clear();

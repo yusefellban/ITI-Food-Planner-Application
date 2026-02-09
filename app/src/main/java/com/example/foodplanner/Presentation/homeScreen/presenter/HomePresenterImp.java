@@ -1,6 +1,11 @@
 package com.example.foodplanner.Presentation.homeScreen.presenter;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.example.foodplanner.Data.AuthRepository;
 import com.example.foodplanner.Data.MealRepository;
+import com.example.foodplanner.Data.UserRepository;
 import com.example.foodplanner.Data.meals.datasource.remote.MealCallback;
 import com.example.foodplanner.Data.meals.datasource.remote.MealsListCallback;
 import com.example.foodplanner.Data.meals.model.Meal;
@@ -9,14 +14,18 @@ import com.example.foodplanner.Presentation.homeScreen.view.HomeViewer;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class HomePresenterImp implements HomePresenter{
 
 private MealRepository mealRepository;
-    HomeViewer homeViewer;
-
-    public HomePresenterImp( HomeViewer homeViewer) {
+   private HomeViewer homeViewer;
+private AuthRepository authRepository;
+    public HomePresenterImp(HomeViewer homeViewer, Context context) {
         this.homeViewer = homeViewer;
-        mealRepository =new MealRepository();
+        mealRepository =new MealRepository(context);
+        authRepository=new AuthRepository(context);
     }
 
     @Override
@@ -83,4 +92,12 @@ private MealRepository mealRepository;
     public void goToRegistration() {
         homeViewer.goToRegistration();
     }
+    public void getUserData(){
+        authRepository.getUserInfo()
+                .subscribeOn(Schedulers.io()).
+                  observeOn(AndroidSchedulers.mainThread()).subscribe(firebaseUser -> {
+                    homeViewer.setUserData(firebaseUser.getDisplayName(),firebaseUser.getPhotoUrl());
+                }, error -> Log.d("TAG", "getUserData: "));
+    }
+
 }

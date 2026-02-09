@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.Data.meals.model.Meal;
 import com.example.foodplanner.R;
-import com.example.foodplanner.Data.meals.datasource.local.CountryCodeLocalDataSource;
+import com.example.foodplanner.Data.meals.datasource.local.CountryCodeLocalData;
 import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
 
 import java.util.List;
@@ -22,12 +22,12 @@ public class HomeCarouselAdapter extends RecyclerView.Adapter<HomeCarouselAdapte
 
     private List<Meal> mealList;
     private Context context;
-    private CountryCodeLocalDataSource countryCodeLocalDataSource;
+    private CountryCodeLocalData countryCodeLocalData;
     private onItemClickListener onItemClick;
 
     public HomeCarouselAdapter(Context context, onItemClickListener onItemClick) {
         this.context = context;
-        countryCodeLocalDataSource = new CountryCodeLocalDataSource();
+        countryCodeLocalData = new CountryCodeLocalData();
         this.onItemClick = onItemClick;
     }
 
@@ -51,7 +51,7 @@ public class HomeCarouselAdapter extends RecyclerView.Adapter<HomeCarouselAdapte
 
         Glide.with(context).load(meal.getThumbnailUrl()).into(holder.bgImage);
 
-        String code = countryCodeLocalDataSource.getCountryCode(meal.getArea());
+        String code = countryCodeLocalData.getCountryCode(meal.getArea());
 
         if (code != null) {
             String flagUrl = "https://flagcdn.com/w160/" + code.toLowerCase() + ".png";

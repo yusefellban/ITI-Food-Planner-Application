@@ -1,5 +1,6 @@
 package com.example.foodplanner.Presentation.mealDetailsScreen.view;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,8 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.foodplanner.Presentation.homeScreen.view.HomeFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -34,8 +37,11 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -50,6 +56,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
     private RecyclerView detailsIngredientsRecyclerView;
     private RecyclerView detailsInstructionRecyclerView;
     private FloatingActionButton favoriteFab;
+    private FloatingActionButton addToCalendarButton;
 
     private YouTubePlayerView youtubePlayerView;
 
@@ -84,7 +91,6 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
         detailsIngredientsItems = view.findViewById(R.id.detailsIngredientsItems);
         favoriteFab = view.findViewById(R.id.favoriteFab);
 
-
         selectedMeal = MealDetailsFragmentArgs.fromBundle(getArguments()).getSelectedMeal();
         presenter=new MealDetailsPresenterImp(this, requireContext());
 
@@ -96,11 +102,18 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
                 .centerCrop()
                 .into(detailsMealImage);
 
+        
         // Setup FAB click listener
         favoriteFab.setOnClickListener(v -> {
             if (currentMeal != null) {
                 presenter.toggleFavorite(currentMeal);
             }
+        });
+        
+        // Calendar button initialization and click listener
+        addToCalendarButton = view.findViewById(R.id.addToCalendarButton);
+        addToCalendarButton.setOnClickListener(v -> {
+            showCalendarDatePicker();
         });
 
         // Check if meal is already in favorites
@@ -202,8 +215,50 @@ public class MealDetailsFragment extends Fragment implements MealDetailsViewer {
 
     @Override
     public void goRegistration() {
-        NavHostFragment.findNavController(MealDetailsFragment.this)
-                .navigate(R.id.action_mealDetailsFragment_to_registrationFragment);
+        NavHostFragment.findNavController(this).navigate(R.id.loginFragment);
+    }
+
+    @Override
+    public void showCalendarDatePicker() {
+        if (currentMeal == null) {
+            Toast.makeText(requireContext(), "Meal data not loaded yet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        
+        // Create DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireContext(),
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // Format the selected date as yyyy-MM-dd
+                    String selectedDate = String.format(Locale.getDefault(), 
+                            "%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay);
+                    
+                    // Add meal to calendar with selected date
+                    presenter.addToCalendar(currentMeal, selectedDate);
+                },
+                year, month, day
+        );
+        
+        // Set minimum date to today (cannot select past dates)
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        
+        // Set maximum date to 30 days from now
+        calendar.add(Calendar.DAY_OF_MONTH, 30);
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void showMealAddedToCalendar(String date) {
+        Toast.makeText(requireContext(), 
+                "Meal added to calendar for " + date, 
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override

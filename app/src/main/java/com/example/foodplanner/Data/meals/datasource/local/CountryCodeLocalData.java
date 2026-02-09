@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CountryCodeLocalDataSource {
+public class CountryCodeLocalData {
 
     private static final Map<String, String> areaToCodeMap = new HashMap<>();
 

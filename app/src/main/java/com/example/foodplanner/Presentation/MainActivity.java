@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
 /// hide nav bar in specific screens
 
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
-        FloatingActionButton fab = findViewById(R.id.fab);
 
         bottomAppBar.post(() -> {
             MaterialShapeDrawable shapeDrawable = (MaterialShapeDrawable) bottomAppBar.getBackground();
@@ -84,15 +83,12 @@ public class MainActivity extends AppCompatActivity {
                     destination.getId() == R.id.mealDetailsFragment) {
 
                 bottomAppBar.setVisibility(View.GONE);
-                fab.hide();
             } else {
 
                 bottomAppBar.setVisibility(View.VISIBLE);
-                fab.show();
 
                 bottomAppBar.performShow();
 
-                fab.animate().translationY(0).setDuration(50).start();
             }
 
 
@@ -103,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
             int id = item.getItemId();
 
-            if (id == R.id.profileFragment ) {
+            if (id == R.id.profileFragment || id==R.id.calendarFragment) {
                 if (!authRepository.isSharedLoggedIn()) {
                     showGoToRegistrationDialog();
                     return false;

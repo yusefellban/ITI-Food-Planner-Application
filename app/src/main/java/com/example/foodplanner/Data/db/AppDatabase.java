@@ -8,14 +8,17 @@ import androidx.room.RoomDatabase;
 
 import com.example.foodplanner.Data.favorites.entity.FavoriteMealEntity;
 import com.example.foodplanner.Data.favorites.local.FavoriteMealDao;
+import com.example.foodplanner.Data.mealplan.entity.ScheduledMealEntity;
+import com.example.foodplanner.Data.mealplan.datasource.ScheduledMealDao;
 import com.example.foodplanner.Data.user.Entity.UserEntity;
 import com.example.foodplanner.Data.user.local.UserDao;
 
 
-@Database(entities = {UserEntity.class, FavoriteMealEntity.class}, version = 4)
+@Database(entities = {UserEntity.class, FavoriteMealEntity.class, ScheduledMealEntity.class}, version = 5)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDaoDao();
     public abstract FavoriteMealDao favoriteMealDao();
+    public abstract ScheduledMealDao scheduledMealDao();
     private static volatile AppDatabase instance;
 
 

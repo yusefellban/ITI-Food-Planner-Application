@@ -13,4 +13,6 @@ public interface MealDetailsPresenter {
      void toggleFavorite(Meal meal);
 
      void goToRegistration();
+     
+     void addToCalendar(Meal meal, String date);
 }
