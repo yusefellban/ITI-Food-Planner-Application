@@ -30,8 +30,7 @@ import com.google.android.material.search.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class DiscoveryFragment extends Fragment implements onClickDiscovery , DiscoveryViewer {
+public class DiscoveryFragment extends Fragment implements onClickDiscovery, DiscoveryViewer {
 
     private ChipGroup chipGroup;
 
@@ -47,16 +46,15 @@ public class DiscoveryFragment extends Fragment implements onClickDiscovery , Di
     private Chip chipCountry;
 
     DiscoveryPresenterImp presenter;
-
+    SearchView searchView;
 
     public DiscoveryFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_discovery, container, false);
     }
@@ -66,7 +64,7 @@ public class DiscoveryFragment extends Fragment implements onClickDiscovery , Di
         super.onViewCreated(view, savedInstanceState);
         // Java
         SearchBar searchBar = view.findViewById(R.id.search_bar);
-        SearchView searchView = view.findViewById(R.id.search_view);
+        searchView = view.findViewById(R.id.search_view);
         searchView.setupWithSearchBar(searchBar);
         chipGroup = view.findViewById(R.id.chipGroup);
         recyclerView = view.findViewById(R.id.discoveryRecyclerView);
@@ -74,17 +72,16 @@ public class DiscoveryFragment extends Fragment implements onClickDiscovery , Di
         chipCategory = view.findViewById(R.id.chipCategory);
         chipCountry = view.findViewById(R.id.chipCountry);
 
-        presenter=new DiscoveryPresenterImp(this,getContext());
-
+        presenter = new DiscoveryPresenterImp(this, getContext());
 
         discoveryAdapter = new DiscoveryAdapter(this);
         recyclerView.setAdapter(discoveryAdapter);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-
         chipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
-            if (checkedIds.isEmpty()) return;
+            if (checkedIds.isEmpty())
+                return;
 
             int id = checkedIds.get(0);
             if (id == R.id.chipIngredient) {
@@ -100,7 +97,7 @@ public class DiscoveryFragment extends Fragment implements onClickDiscovery , Di
                     presenter.setList(countryList);
                 }
 
-            } else if(id == R.id.chipCategory){
+            } else if (id == R.id.chipCategory) {
                 if (categoryList == null || categoryList.isEmpty()) {
                     setCategoriesLit();
                 } else {
@@ -108,13 +105,61 @@ public class DiscoveryFragment extends Fragment implements onClickDiscovery , Di
                 }
             }
 
-
         });
 
-
         setCategoriesLit();
+        setupSearch();
     }
 
+    private void setupSearch() {
+        com.example.foodplanner.Data.MealRepository repository = new com.example.foodplanner.Data.MealRepository(
+                getContext());
+        SearchMealAdapter searchAdapter = new SearchMealAdapter(getContext(), meal -> {
+            // Handle click
+            com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal selectedMeal = new com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal(
+                    Integer.parseInt(meal.getId()), meal.getName(), meal.getThumbnailUrl());
+
+            DiscoveryFragmentDirections.ActionDiscoveryFragmentToMealDetailsFragment action = DiscoveryFragmentDirections
+                    .actionDiscoveryFragmentToMealDetailsFragment(selectedMeal);
+            Navigation.findNavController(getView()).navigate(action);
+        });
+
+        RecyclerView searchRecyclerView = getView().findViewById(R.id.search_recycler_view);
+        searchRecyclerView.setAdapter(searchAdapter);
+
+        io.reactivex.rxjava3.subjects.PublishSubject<String> subject = io.reactivex.rxjava3.subjects.PublishSubject
+                .create();
+
+        searchView.getEditText().addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                subject.onNext(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+            }
+        });
+
+        io.reactivex.rxjava3.disposables.Disposable disposable = subject
+                .debounce(500, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .switchMapSingle(query -> {
+                    if (query.isEmpty()) {
+                        return io.reactivex.rxjava3.core.Single
+                                .just(new java.util.ArrayList<com.example.foodplanner.Data.meals.model.Meal>());
+                    }
+                    return repository.searchMeal(query)
+                            .onErrorReturnItem(new java.util.ArrayList<>());
+                })
+                .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(searchAdapter::setList, throwable -> Log.e("DiscoveryFragment", "Search error", throwable));
+    }
 
     public void setCategoriesLit() {
         presenter.getAllCategories(new CategoriesResponseCallback() {
@@ -168,9 +213,9 @@ public class DiscoveryFragment extends Fragment implements onClickDiscovery , Di
 
     @Override
     public void goToFilteredScreen(SendSelectedItem selectedMeal) {
-                DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action =
-                        DiscoveryFragmentDirections.actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
-                Navigation.findNavController(getView()).navigate(action);
+        DiscoveryFragmentDirections.ActionDiscoveryFragmentToFilteredMealsFragment action = DiscoveryFragmentDirections
+                .actionDiscoveryFragmentToFilteredMealsFragment(selectedMeal);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     @Override

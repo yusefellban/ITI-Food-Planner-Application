@@ -49,7 +49,7 @@ public class MealRemoteDataSource {
         List<Meal> mealslist = new ArrayList<>();
 
         final int totalRequests = 8;
-        final int[] completedRequests = {0};
+        final int[] completedRequests = { 0 };
 
         for (int i = 0; i < totalRequests; i++) {
             mealApis.getRandomMeal().enqueue(new Callback<MealResponse>() {
@@ -116,7 +116,7 @@ public class MealRemoteDataSource {
     }
 
     /// Filtered screen
-    public  void getAllFilteredMeals(SendSelectedItem selectedItem, MealsListCallback mealsListCallback) {
+    public void getAllFilteredMeals(SendSelectedItem selectedItem, MealsListCallback mealsListCallback) {
         String selectedItemUrl = getSelectedItemUrl(selectedItem);
         mealApis.getFilteredMeals(selectedItemUrl).enqueue(new Callback<MealResponse>() {
             @Override
@@ -137,17 +137,44 @@ public class MealRemoteDataSource {
         });
 
     }
+
     private String getSelectedItemUrl(SendSelectedItem selectedItem) {
         String res = null;
-        if (selectedItem.getType() == 1) {//category
+        if (selectedItem.getType() == 1) {// category
             res = "filter.php?c=" + selectedItem.getName().toLowerCase().replace(" ", "_");
-        } else if(selectedItem.getType() == 2) {//Ingreadient
+        } else if (selectedItem.getType() == 2) {// Ingreadient
             res = "filter.php?i=" + selectedItem.getName().toLowerCase().replace(" ", "_");
-        } else if(selectedItem.getType() == 3) {//country
+        } else if (selectedItem.getType() == 3) {// country
             res = "filter.php?a=" + selectedItem.getName().toLowerCase().replace(" ", "_");
 
         }
         return res;
     }
 
+    public io.reactivex.rxjava3.core.Single<MealResponse> searchMeal(String query) {
+        return mealApis.getSearchMeal(query);
+    }
+
+
+    /// Details data source
+    public void getMealDetails(int id,MealCallback mealCallback) {
+        mealApis.getMealByID(String.valueOf(id)).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.body() != null && response.body().getMeals() != null) {
+                    Meal meal = response.body().getMeals().get(0);
+                    mealCallback.onSuccess(meal);
+                } else {
+                    mealCallback.onError("No meal found");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                mealCallback.onError(t.getMessage());
+
+            }
+        });
+
+    }
 }

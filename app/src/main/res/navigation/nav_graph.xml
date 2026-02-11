@@ -72,6 +72,9 @@
         <action
             android:id="@+id/action_discoveryFragment_to_filteredMealsFragment"
             app:destination="@id/filteredMealsFragment" />
+        <action
+            android:id="@+id/action_discoveryFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/filteredMealsFragment"
@@ -107,5 +110,9 @@
         android:id="@+id/calendarFragment"
         android:name="com.example.foodplanner.Presentation.calendarScreen.view.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
 </navigation>

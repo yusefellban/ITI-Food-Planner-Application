@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.foodplanner.Data.MealRepository;
 import com.example.foodplanner.Data.meals.model.Meal;
 import com.example.foodplanner.Data.mealplan.model.ScheduledMeal;
+import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
 import com.example.foodplanner.Presentation.calendarScreen.view.CalendarViewer;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -134,4 +135,11 @@ public class CalendarPresenterImp implements CalendarPresenter {
     public void onDestroy() {
         disposables.clear();
     }
+
+    @Override
+    public void onMealClicked(ScheduledMeal meal) {
+        viewer.navigateToMealDetails(new SelectedMeal(Integer.parseInt(meal.getMealId()),meal.getMealName(),meal.getMealImageUrl()));
+
+    }
+
 }

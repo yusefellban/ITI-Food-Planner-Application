@@ -22,7 +22,6 @@ import com.example.foodplanner.Data.user.Entity.UserEntity;
 import com.example.foodplanner.Presentation.profileScreen.presenter.ProfilePresenterImp;
 import com.example.foodplanner.R;
 
-
 public class ProfileFragment extends Fragment implements ProfileView {
 
     private ImageView profileImage;
@@ -32,7 +31,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
     private ProfilePresenterImp prsenter;
     private Button logout;
 
-    private  ActivityResultLauncher<PickVisualMediaRequest> pickMedia ;
+    private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -41,20 +40,19 @@ public class ProfileFragment extends Fragment implements ProfileView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pickMedia =
-                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                    if (uri != null) {
-                        String imagePath = uri.toString();
-                        Glide.with(this).load(imagePath).placeholder(R.drawable.ic_user_guest).into(profileImage);
+        pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+            if (uri != null) {
+                String imagePath = uri.toString();
+                Glide.with(this).load(imagePath).placeholder(R.drawable.ic_user_guest).into(profileImage);
 
-                        prsenter.changeProfileImage(imagePath);
-                    }
-                });
+                prsenter.changeProfileImage(imagePath);
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -67,7 +65,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
         profileUserName = view.findViewById(R.id.profileUserName);
         profileUserEmail = view.findViewById(R.id.profileUserEmail);
         logout = view.findViewById(R.id.logoutBtn);
-        prsenter=new ProfilePresenterImp(getContext(),this);
+        prsenter = new ProfilePresenterImp(getContext(), this);
 
         profileUploadTextClick.setOnClickListener((v) -> {
             // start aploading the dd it in data pase and Live data will show it
@@ -79,16 +77,18 @@ public class ProfileFragment extends Fragment implements ProfileView {
         prsenter.getCurrentLocalUser();
         prsenter.trackProfileImage();
 
-
-        logout.setOnClickListener((v)->{
-            prsenter.performLogout();
+        logout.setOnClickListener((v) -> {
+            new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Logout")
+                    .setMessage("Are you sure you want to logout?")
+                    .setPositiveButton("Logout", (dialog, which) -> {
+                        prsenter.performLogout();
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                    .show();
         });
 
-
     }
-
-
-
 
     @Override
     public void displayImage(String path) {
@@ -100,7 +100,6 @@ public class ProfileFragment extends Fragment implements ProfileView {
                     .into(profileImage);
         }
     }
-
 
     @Override
     public void showSuccessMessage(String message) {

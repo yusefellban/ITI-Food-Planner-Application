@@ -32,7 +32,7 @@ public class FavoritesFragment extends Fragment implements FavoritesViewer, onFa
     private View emptyStateView;
     private LottieAnimationView emptyAnimation;
     private TextView emptyText;
-    
+
     private FavoritesAdapter adapter;
     private FavoritesPresenter presenter;
 
@@ -42,34 +42,34 @@ public class FavoritesFragment extends Fragment implements FavoritesViewer, onFa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         // Initialize views
         recyclerView = view.findViewById(R.id.favoritesRecyclerView);
         swipeRefreshLayout = view.findViewById(R.id.favoritesSwipeRefresh);
         emptyStateView = view.findViewById(R.id.emptyStateView);
         emptyAnimation = view.findViewById(R.id.emptyAnimation);
         emptyText = view.findViewById(R.id.emptyText);
-        
+
         // Setup RecyclerView
         adapter = new FavoritesAdapter(requireContext(), this);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerView.setAdapter(adapter);
-        
+
         // Setup presenter
         presenter = new FavoritesPresenterImp(this, requireContext());
-        
+
         // Setup swipe refresh
         swipeRefreshLayout.setOnRefreshListener(() -> {
             presenter.loadFavorites();
         });
-        
+
         // Load favorites
         presenter.loadFavorites();
     }
@@ -95,8 +95,8 @@ public class FavoritesFragment extends Fragment implements FavoritesViewer, onFa
 
     @Override
     public void navigateToMealDetails(SelectedMeal selectedMeal) {
-        FavoritesFragmentDirections.ActionFavoritesFragmentToMealDetailsFragment action =
-                FavoritesFragmentDirections.actionFavoritesFragmentToMealDetailsFragment(selectedMeal);
+        FavoritesFragmentDirections.ActionFavoritesFragmentToMealDetailsFragment action = FavoritesFragmentDirections
+                .actionFavoritesFragmentToMealDetailsFragment(selectedMeal);
         Navigation.findNavController(getView()).navigate(action);
     }
 
@@ -117,7 +117,14 @@ public class FavoritesFragment extends Fragment implements FavoritesViewer, onFa
 
     @Override
     public void onRemoveClick(Meal meal) {
-        presenter.removeFavorite(Integer.parseInt(meal.getId()));
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Remove from Favorites")
+                .setMessage("Are you sure you want to remove this meal from your favorites?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    presenter.removeFavorite(Integer.parseInt(meal.getId()));
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     @Override

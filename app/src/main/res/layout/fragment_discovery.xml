@@ -25,16 +25,26 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="@string/T_search_recipes_ingredients"
-        app:menu="@menu/search_bar_menu"
         android:layout_below="@+id/discoveryTitleText"
        />
+<!--    app:menu="@menu/search_bar_menu"-->
+
 
     <com.google.android.material.search.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/T_search_recipes"
+        app:backgroundTint="@color/background"
        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_recycler_view"
+            android:layout_width="match_parent"
+            app:backgroundTint="@color/background"
+
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
     </com.google.android.material.search.SearchView>
 
     <com.google.android.material.chip.ChipGroup

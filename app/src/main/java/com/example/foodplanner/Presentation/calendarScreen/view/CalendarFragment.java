@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.Data.mealplan.model.ScheduledMeal;
+import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
 import com.example.foodplanner.Presentation.calendarScreen.presenter.CalendarPresenter;
 import com.example.foodplanner.Presentation.calendarScreen.presenter.CalendarPresenterImp;
 import com.example.foodplanner.R;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CalendarFragment extends Fragment implements CalendarViewer, onScheduledMealClickListener {
-    
+
     private CalendarView calendarView;
     private RecyclerView dayMealsRecyclerView;
     private LinearLayout emptyStateLayout;
@@ -39,7 +40,7 @@ public class CalendarFragment extends Fragment implements CalendarViewer, onSche
     private MaterialCardView offlineBanner;
     private FloatingActionButton addMealFab;
     private TextView selectedDateLabel;
-    
+
     private CalendarPresenter presenter;
     private DayMealsAdapter adapter;
     private String selectedDate;
@@ -54,14 +55,15 @@ public class CalendarFragment extends Fragment implements CalendarViewer, onSche
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         // Initialize views
         calendarView = view.findViewById(R.id.calendarView);
         dayMealsRecyclerView = view.findViewById(R.id.dayMealsRecyclerView);
@@ -71,39 +73,39 @@ public class CalendarFragment extends Fragment implements CalendarViewer, onSche
         offlineBanner = view.findViewById(R.id.offlineBanner);
         addMealFab = view.findViewById(R.id.addMealFab);
         selectedDateLabel = view.findViewById(R.id.selectedDateLabel);
-        
+
         // Setup RecyclerView
         adapter = new DayMealsAdapter(this);
         dayMealsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         dayMealsRecyclerView.setAdapter(adapter);
-        
+
         // Get current date
         Calendar calendar = Calendar.getInstance();
         selectedDate = dateFormat.format(calendar.getTime());
-        
+
         // Restrict calendar to current month only
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         long minDate = calendar.getTimeInMillis();
-        
+
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         long maxDate = calendar.getTimeInMillis();
-        
+
         calendarView.setMinDate(minDate);
         calendarView.setMaxDate(maxDate);
-        
+
         // Calendar date selection listener
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
             presenter.onDaySelected(selectedDate);
         });
-        
+
         // FAB click listener - navigate to discovery to select a meal
         addMealFab.setOnClickListener(v -> {
             // Navigate to discovery fragment
             Navigation.findNavController(v).navigate(R.id.discoveryFragment);
             Toast.makeText(requireContext(), "Select a meal to add to " + selectedDate, Toast.LENGTH_SHORT).show();
         });
-        
+
         // Load current month and selected day
         Calendar now = Calendar.getInstance();
         presenter.loadMonth(now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1);
@@ -172,15 +174,30 @@ public class CalendarFragment extends Fragment implements CalendarViewer, onSche
     }
 
     @Override
+    public void navigateToMealDetails(SelectedMeal meal) {
+        CalendarFragmentDirections.ActionCalendarFragmentToMealDetailsFragment action = CalendarFragmentDirections
+                .actionCalendarFragmentToMealDetailsFragment(meal);
+        Navigation.findNavController(getView()).navigate(action);
+    }
+
+    @Override
     public void onMealClick(ScheduledMeal meal) {
         // Navigate to meal details
         // Note: You'll need to convert ScheduledMeal to SelectedMeal for navigation
         Toast.makeText(requireContext(), "Viewing: " + meal.getMealName(), Toast.LENGTH_SHORT).show();
+        presenter.onMealClicked(meal);
     }
 
     @Override
     public void onRemoveClick(ScheduledMeal meal) {
-        presenter.removeMeal(meal.getMealId(), meal.getScheduledDate());
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Remove from Calendar")
+                .setMessage("Are you sure you want to remove this meal from your calendar?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    presenter.removeMeal(meal.getMealId(), meal.getScheduledDate());
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void updateSelectedDateLabel(String date, int mealCount) {

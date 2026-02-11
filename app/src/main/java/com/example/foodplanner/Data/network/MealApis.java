@@ -24,4 +24,7 @@ public interface MealApis {
 
     @GET
     Call<MealResponse> getFilteredMeals(@Url String url);
+
+    @GET("search.php")
+    io.reactivex.rxjava3.core.Single<MealResponse> getSearchMeal(@Query("s") String query);
 }

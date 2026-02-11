@@ -18,6 +18,7 @@ import com.example.foodplanner.Data.meals.datasource.remote.MealDetailsRemoteDat
 import com.example.foodplanner.Data.meals.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.Data.meals.datasource.remote.MealsListCallback;
 import com.example.foodplanner.Data.meals.model.Country;
+import com.example.foodplanner.Data.meals.model.Meal;
 import com.example.foodplanner.Data.meals.model.wrapper.SendSelectedItem;
 import com.example.foodplanner.utils.NetworkManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,12 +30,13 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MealRepository {
     private final CountryCodeLocalData countryCodeLocalData;
     private final MealRemoteDataSource mealRemoteDataSource;
-    private final MealDetailsRemoteDataSource mealDetailsRemoteDataSource;
+//    private final MealDetailsRemoteDataSource mealDetailsRemoteDataSource;
     private final MealPlanLocalDataSource localDataSource;
     private final MealPlanRemoteDataSource remoteDataSource;
     private final FirebaseAuth firebaseAuth;
@@ -44,13 +46,12 @@ public class MealRepository {
     public MealRepository(Context context) {
         countryCodeLocalData = new CountryCodeLocalData();
         mealRemoteDataSource = new MealRemoteDataSource();
-        mealDetailsRemoteDataSource=new MealDetailsRemoteDataSource();
-        this.context=context;
+//        mealDetailsRemoteDataSource = new MealDetailsRemoteDataSource();
+        this.context = context;
         this.localDataSource = new MealPlanLocalDataSourceImp(AppDatabase.getInstance(this.context).scheduledMealDao());
         this.remoteDataSource = new MealPlanRemoteDataSourceImp();
         this.firebaseAuth = FirebaseAuth.getInstance();
     }
-
 
     public void getRandomMeal(MealCallback mealCallback) {
         mealRemoteDataSource.getRandomMeal(mealCallback);
@@ -80,11 +81,11 @@ public class MealRepository {
     }
 
     public void getMealDetails(int id, MealCallback mealCallback) {
-        mealDetailsRemoteDataSource.getMealDetails(id, mealCallback);
+        mealRemoteDataSource.getMealDetails(id, mealCallback);
     }
 
     public void getAllFilteredMeals(SendSelectedItem selectedItem, MealsListCallback mealsListCallback) {
-        mealRemoteDataSource.getAllFilteredMeals(selectedItem,mealsListCallback);
+        mealRemoteDataSource.getAllFilteredMeals(selectedItem, mealsListCallback);
     }
 
     /**
@@ -150,7 +151,8 @@ public class MealRepository {
         }
 
         if (isOnline()) {
-            // Try Firebase first, cache to Room, then return from Room (for real-time updates)
+            // Try Firebase first, cache to Room, then return from Room (for real-time
+            // updates)
             return remoteDataSource.getScheduledMealsForDate(date, userId)
                     .subscribeOn(Schedulers.io())
                     .flatMapCompletable(remoteMeals -> {
@@ -215,7 +217,8 @@ public class MealRepository {
                     .map(this::convertEntitiesToMeals)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext(meals -> Log.d(TAG, "Retrieved " + meals.size() + " meals for month from Room (offline)"));
+                    .doOnNext(
+                            meals -> Log.d(TAG, "Retrieved " + meals.size() + " meals for month from Room (offline)"));
         }
     }
 
@@ -263,8 +266,7 @@ public class MealRepository {
                 meal.getCategory(),
                 meal.getScheduledDate(),
                 userId,
-                System.currentTimeMillis()
-        );
+                System.currentTimeMillis());
     }
 
     // Convert list of entities to ScheduledMeals
@@ -280,5 +282,17 @@ public class MealRepository {
             meals.add(meal);
         }
         return meals;
+    }
+
+    public Single<List<Meal>> searchMeal(
+            String query) {
+        return mealRemoteDataSource.searchMeal(query)
+                .map(mealResponse -> {
+                    if (mealResponse.getMeals() != null) {
+                        return mealResponse.getMeals();
+                    } else {
+                        return new ArrayList<com.example.foodplanner.Data.meals.model.Meal>();
+                    }
+                });
     }
 }

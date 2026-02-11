@@ -81,4 +81,5 @@ dependencies {
     implementation("androidx.room:room-rxjava3:2.6.1")
 //   PickVisualMedia
     implementation("androidx.activity:activity:1.8.0")
+    implementation("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
 }

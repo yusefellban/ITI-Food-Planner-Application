@@ -96,7 +96,8 @@
                     android:layout_height="50dp"
                     android:contentDescription="favorite icon"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/heart_white" />
+                    android:src="@drawable/heart_white"
+                    android:visibility="gone"/>
 
             </com.google.android.material.card.MaterialCardView>
 

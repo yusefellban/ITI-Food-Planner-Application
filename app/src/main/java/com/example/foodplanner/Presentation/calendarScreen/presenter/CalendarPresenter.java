@@ -1,6 +1,8 @@
 package com.example.foodplanner.Presentation.calendarScreen.presenter;
 
+import com.example.foodplanner.Data.mealplan.model.ScheduledMeal;
 import com.example.foodplanner.Data.meals.model.Meal;
+import com.example.foodplanner.Data.meals.model.wrapper.SelectedMeal;
 
 public interface CalendarPresenter {
     
@@ -15,4 +17,7 @@ public interface CalendarPresenter {
     void checkConnectivity();
     
     void onDestroy();
+
+    void onMealClicked(ScheduledMeal meal);
+
 }
