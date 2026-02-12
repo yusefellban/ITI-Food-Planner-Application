@@ -19,12 +19,12 @@
 
 | Home Screen | Meal Details |
 |:---:|:---:|
-| ![Home Screen](docs/images/home_screen.png) | ![Meal Details](docs/images/details_screen.png) |
+| ![Home Screen](docs/images/home.png) | ![Meal Details](docs/images/details.png) |
 | **Dashboard & Discovery** | **Recipe Information & Actions** |
 
 | Calendar Schedule | Favorites Collection |
 |:---:|:---:|
-| ![Calendar Screen](docs/images/calendar_screen.png) | ![Favorites Screen](docs/images/favorites_screen.png) |
+| ![Calendar Screen](docs/images/calender.png) | ![Favorites Screen](docs/images/favoret.png) |
 | **Weekly/Monthly Planning** | **Saved Recipes (Offline)** |
 
 ## 🛠️ Architecture & Tech Stack
